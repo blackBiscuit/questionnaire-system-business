@@ -1,0 +1,14 @@
+.header {
+  padding: 0 40px;
+  display: flex; 
+  justify-content: space-between;
+  color: #fff;
+}
+.main {
+    min-height: calc(100vh - 64px - 68px);
+}
+.floor { 
+    border-top: 1px solid #e8e8e8;
+    text-align: center;
+    background-color: #f7f7f7;
+}

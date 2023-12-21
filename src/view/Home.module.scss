@@ -1,0 +1,28 @@
+.container {
+  position: relative;
+  min-height: calc(100vh - 64px - 68px);
+  // background-color: #F5F5F5;
+  //  background-image: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);
+     background-image: linear-gradient(to top, #e6e9f0 0%, #eef1f5 100%);
+  // background-image: linear-gradient(to top, #dad4ec 0%, #dad4ec 1%, #f3e7e9 100%);
+//   background-image: radial-gradient(73% 147%, #eadfdf 59%, #ece2df 100%),
+//     radial-gradient(
+//       91% 146%,
+//       rgba(255, 255, 255, 0.5) 47%,
+//       rgba(0, 0, 0, 0.5) 100%
+//     );
+//   background-blend-mode: screen;
+  .info {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    .btn-wrapper {
+      text-align: center;
+      button {
+        height: 60px;
+        font-size: 24px;
+      }
+    }
+  }
+}

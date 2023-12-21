@@ -1,0 +1,17 @@
+.container {
+  padding: 24px;
+  box-sizing: border-box;
+  width: 100%;
+  display: flex;
+  .left {
+    width: 120px;
+  }
+  .right {
+    flex: 1;
+    margin-left: 60px;
+  }
+  .current-btn {
+    color: #4096ff;
+    border-color: #4096ff;
+  }
+}

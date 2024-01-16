@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { RegisterParams } from '../types/user'
+import { LoginParams, RegisterParams } from '../types/user'
 import axios from './ajax'
 export const getUserInfoServices = async <T extends Record<string, any>>() => {
   const url = '/api/user/info'
@@ -18,10 +18,7 @@ export const getEmailCodeServices = async <T extends Record<string, any>>(
   const url = '/api/user/email/code'
   return (await axios.post(url, data)) as T
 }
-interface LoginParams {
-  email: string
-  password: string
-}
+
 export const userLoginServices = async <T extends Record<string, any>>(
   data: LoginParams
 ) => {

@@ -75,7 +75,6 @@ export default (() => {
   //   // eslint-disable-next-line react-hooks/exhaustive-deps
   // }, [loading])
   useEffect(() => {
-    console.log('便')
     setQuestions([])
     setPage(1)
     setTotal(0)

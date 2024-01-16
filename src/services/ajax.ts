@@ -29,16 +29,21 @@ aInstance.interceptors.request.use((req) => {
   Nprogress.start()
   return req
 })
-aInstance.interceptors.response.use((res) => {
-  Nprogress.done()
-  const resData = (res.data || {}) as ResType
-  if (resData.errno !== 0) {
-    const { msg } = resData as ResTypeFail
-    message.error(msg)
-    throw new Error(msg)
-  } else {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    return (resData as ResTypeSuccess).data as any
+aInstance.interceptors.response.use(
+  (res) => {
+    Nprogress.done()
+    const resData = (res.data || {}) as ResType
+    if (resData.errno !== 0) {
+      const { msg } = resData as ResTypeFail
+      message.error(msg)
+      throw new Error(msg)
+    } else {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      return (resData as ResTypeSuccess).data as any
+    }
+  },
+  () => {
+    Nprogress.done()
   }
-})
+)
 export default aInstance

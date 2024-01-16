@@ -1,6 +1,6 @@
 import { FC } from 'react'
 import { useRequest } from 'ahooks'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { Space, Form, Input, Button, message } from 'antd'
 import { UserAddOutlined } from '@ant-design/icons'
 import { getEmailCodeServices, userRegisterServices } from '../services/user'
@@ -17,6 +17,8 @@ type FieldType = {
   emailCode?: string
 }
 export default (() => {
+  const navigate = useNavigate()
+  const [searchParams] = useSearchParams()
   const [form] = Form.useForm()
   const [messageApi, contextHolder] = message.useMessage()
   const key = 'updatable'
@@ -33,7 +35,14 @@ export default (() => {
       })
       return data
     },
-    { manual: true }
+    {
+      manual: true,
+      onSuccess() {
+        message.success('注册成功')
+        searchParams.set('email', form.getFieldValue('email'))
+        navigate(`${LOGIN_PATHNAME}?${searchParams.toString()}`)
+      }
+    }
   )
   // const [getEmailCodeDuration, setGetEmailCodeDuration] = useState(0)
   //  const [emailCodeFlag, setEmailCodeFlag] = useState(true)
@@ -41,6 +50,7 @@ export default (() => {
     console.log('Success:', values)
     run(values)
   }
+
   const openMessage = () => {
     messageApi.open({
       key,

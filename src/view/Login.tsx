@@ -1,9 +1,13 @@
 import { FC, useEffect } from 'react'
+import { useRequest } from 'ahooks'
 import { LockOutlined, UserAddOutlined, UserOutlined } from '@ant-design/icons'
-import { Button, Checkbox, Form, Input } from 'antd'
-import { Link } from 'react-router-dom'
-import { REGISTER_PATHNAME } from '../router'
+import { Button, Checkbox, Form, Input, message } from 'antd'
+import { Link, useSearchParams, useNavigate } from 'react-router-dom'
+import { MANAGE_LIST_PATHNAME, REGISTER_PATHNAME } from '../router'
 import styles from './Login.module.scss'
+import { userLoginServices } from '../services/user'
+import { LoginParams, LoginResponse } from '../types/user'
+import { setToken, setUserInfo } from '../utils/userInfo'
 type FieldType = {
   password?: string
   email?: string
@@ -26,7 +30,24 @@ const getUserInfo = () => {
   }
 }
 export default (() => {
+  const navigate = useNavigate()
   const [form] = Form.useForm()
+  const [searchParams] = useSearchParams()
+  const { run, loading } = useRequest(
+    async (value: LoginParams) => {
+      return await userLoginServices<LoginResponse>(value)
+    },
+    {
+      manual: true,
+      onSuccess(data) {
+        setToken(data.token)
+        setUserInfo(data.userInfo)
+        message.success(`欢迎回来😊,${data.userInfo.username}`)
+        navigate(MANAGE_LIST_PATHNAME)
+      }
+    }
+  )
+  const _email = searchParams.get('email')
   const onFinish = (values: FieldType) => {
     const { email, password, remember } = values || {}
     console.log('Received values of form: ', values)
@@ -35,16 +56,24 @@ export default (() => {
     } else {
       forgetUser()
     }
+    if (email && password) {
+      run({
+        email,
+        password
+      })
+    }
   }
+
   useEffect(() => {
+    if (_email) return
     const userInfo = getUserInfo()
     if (userInfo.email && userInfo.password) {
       form.setFieldsValue({
         ...userInfo
       })
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [_email])
   return (
     <div className={styles['container-wrapper']}>
       <div className={styles.container}>
@@ -57,7 +86,7 @@ export default (() => {
           form={form}
           name="normal_login"
           className="login-form"
-          initialValues={{ remember: true }}
+          initialValues={{ remember: true, email: searchParams.get('email') }}
           onFinish={onFinish}
         >
           <Form.Item<FieldType>
@@ -97,6 +126,7 @@ export default (() => {
           </Form.Item>
           <Form.Item>
             <Button
+              disabled={loading}
               style={{
                 width: '100%'
               }}

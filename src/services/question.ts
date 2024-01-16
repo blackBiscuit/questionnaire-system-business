@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { QuestionData } from '../types/question'
+import { QuestionData, QuestionInfo } from '../types/question'
 import axios from './ajax'
 interface SearchOption {
   keyword: string
@@ -32,7 +32,7 @@ export const createQuestionServices = async <
 }
 export const updateQuestionServices = async <T extends Record<string, any>>(
   id: string,
-  opt?: Partial<QuestionData>
+  opt?: Partial<QuestionInfo>
 ) => {
   const url = `/api/question/update/${id}`
   const data = (await axios.patch(url, opt)) as T

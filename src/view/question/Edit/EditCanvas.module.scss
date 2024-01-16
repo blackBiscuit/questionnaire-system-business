@@ -1,0 +1,35 @@
+.canvas-content {
+  width: 100%;
+  height: 100%;
+  background-color: #fff;
+  box-sizing: border-box;
+  padding: 15px;
+  overflow: auto;
+  .component-wrapper {
+    margin: 12px;
+    border: 1px solid #fff;
+    padding: 12px;
+    border-radius: 3px;
+
+    &:hover {
+      border-color: #d9d9d9;
+    }
+    .component {
+      pointer-events: none; // 屏蔽鼠标行为，组件不让被点击到
+    }
+    &.selected {
+      border-color: #1c90fc !important;
+    }
+    &.locked {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+  }
+}
+.canvas-loading {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

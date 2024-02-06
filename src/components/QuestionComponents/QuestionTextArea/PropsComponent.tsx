@@ -1,5 +1,5 @@
 import { FC, useEffect } from 'react'
-import { Form, Input } from 'antd'
+import { Checkbox, Form, Input } from 'antd'
 import {
   QuestionTextAreaPropsType,
   QuestionTextAreaChangePropsType
@@ -7,6 +7,7 @@ import {
 interface FieldType {
   placeholder: string
   title: string
+  required: boolean
 }
 export default ((props) => {
   const { placeholder, title, disabled, onchange } = props
@@ -42,6 +43,13 @@ export default ((props) => {
       <Form.Item<FieldType> name="placeholder" label="placeholder">
         <Input />
       </Form.Item>
+      <Form.Item<FieldType>
+          name="required"
+          label="是否必填"
+          valuePropName="checked"
+        >
+          <Checkbox>必填</Checkbox>
+        </Form.Item>
     </Form>
   )
 }) as FC<QuestionTextAreaChangePropsType>

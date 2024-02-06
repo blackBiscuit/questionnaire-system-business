@@ -22,7 +22,7 @@ export interface QuestionInfo {
   componentList: QuestionComponent[]
   answerCount: number
   isStar: boolean
-  isPublished: boolean
+  isPublished?: boolean
   createAt: string
   isDeleted: boolean
 }

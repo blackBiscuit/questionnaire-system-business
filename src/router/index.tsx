@@ -11,7 +11,6 @@ import Star from '../view/manage/Star'
 import Trash from '../view/manage/Trash'
 import Edit from '../view/question/Edit'
 import Stat from '../view/question/Stat'
-import Test from '../view/Test'
 const router = createBrowserRouter([
   {
     path: '/',
@@ -75,10 +74,6 @@ const router = createBrowserRouter([
         element: <Stat />
       }
     ]
-  },
-  {
-    path: '/test',
-    element: <Test />
   }
 ])
 export default router
@@ -87,6 +82,7 @@ export const HOME_PATHNAME = '/home'
 export const REGISTER_PATHNAME = '/register'
 export const MANAGE_LIST_PATHNAME = '/manage/list'
 export const QUESTION_STAT = '/question/stat'
+export const QUESTION_EDIT = '/question/edit'
 export const isLoginOrRegister = (pathname: string) => {
   const filterAry = [LOGIN_PATHNAME, REGISTER_PATHNAME]
   return filterAry.includes(pathname) ? true : false

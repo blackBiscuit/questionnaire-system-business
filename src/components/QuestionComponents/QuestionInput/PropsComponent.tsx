@@ -1,5 +1,5 @@
 import { FC, useEffect } from 'react'
-import { Form, Input } from 'antd'
+import { Checkbox, Form, Input } from 'antd'
 import {
   QuestionInputPropsType,
   QuestionInputChangePropsType
@@ -7,9 +7,10 @@ import {
 interface FieldType {
   placeholder: string
   title: string
+  required?: boolean
 }
 export default ((props) => {
-  const { placeholder, title, disabled, onchange } = props
+  const { placeholder, title, required, disabled, onchange } = props
   const [form] = Form.useForm<QuestionInputPropsType>()
   const handleValueChange = () => {
     const newQuestionInput = form.getFieldsValue()
@@ -18,9 +19,10 @@ export default ((props) => {
   useEffect(() => {
     form.setFieldsValue({
       placeholder,
-      title
+      title,
+      required
     })
-  }, [placeholder, title, form])
+  }, [placeholder, title, required, form])
   return (
     <Form
       disabled={disabled}
@@ -41,6 +43,13 @@ export default ((props) => {
       </Form.Item>
       <Form.Item<FieldType> name="placeholder" label="placeholder">
         <Input />
+      </Form.Item>
+      <Form.Item<FieldType>
+        name="required"
+        label="是否必填"
+        valuePropName="checked"
+      >
+        <Checkbox>必填</Checkbox>
       </Form.Item>
     </Form>
   )

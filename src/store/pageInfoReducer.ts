@@ -1,12 +1,23 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { produce } from 'immer'
-export interface PageInfoType {
-  resetTitle: string
-  title: string
-  desc?: string
-  js?: string
-  css?: string
-}
+import { QuestionInfo } from '../types/question'
+// export interface PageInfoType {
+//
+//   resetTitle: string
+//   title: string
+//   desc?: string
+//   js?: string
+//   css?: string
+// }
+type OmitName =
+  | 'id'
+  | 'componentList'
+  | 'answerCount'
+  | 'createAt'
+  | 'isStar'
+  | 'isDeleted'
+// 组件内部使用的标题，当标题为空时，会用内部标题替换，防止标题为空
+export type PageInfoType = Omit<QuestionInfo, OmitName> & { resetTitle: string }
 const INIT_STATE: PageInfoType = {
   title: '',
   resetTitle: '',

@@ -23,7 +23,14 @@ const useLoadQuestionData = () => {
   )
   useEffect(() => {
     if (!data) return
-    const { componentList, title, desc = '', js = '', css = '' } = data
+    const {
+      componentList,
+      title,
+      desc = '',
+      js = '',
+      css = '',
+      isPublished = false
+    } = data
     const selectedId =
       componentList.length > 0 ? componentList[0].component_id : ''
     dispatch(
@@ -33,7 +40,16 @@ const useLoadQuestionData = () => {
         copiedComponent: null
       })
     )
-    dispatch(resetPageInfoReducer({ title, desc, js, css, resetTitle: title }))
+    dispatch(
+      resetPageInfoReducer({
+        title,
+        desc,
+        js,
+        css,
+        resetTitle: title,
+        isPublished
+      })
+    )
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data])
   useEffect(() => {

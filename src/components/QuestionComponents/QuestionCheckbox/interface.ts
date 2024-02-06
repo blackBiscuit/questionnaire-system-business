@@ -1,3 +1,4 @@
+import { AnswerStat } from '../../../types/stat'
 import {
   QuestionPublicProps,
   PropsQuestionComponentPublicProps
@@ -11,6 +12,7 @@ export interface QuestionCheckPropsType {
   title?: string
   isVertical?: boolean
   list: OptionType[]
+  required?: boolean
 }
 export type QuestionCheckChangePropsType =
   PropsQuestionComponentPublicProps<QuestionCheckPropsType> &
@@ -34,11 +36,16 @@ export const QuestionCheckDefaultProps: Required<QuestionCheckPropsType> = {
       value: 'option3',
       checked: false
     }
-  ]
+  ],
+  required: false
 }
 export const QUESTION_CHECK_NAME = 'questionCheck'
 export type QuestionCheckName = typeof QUESTION_CHECK_NAME
 export type QuestionCheckProps = QuestionPublicProps & {
   type: QuestionCheckName
   props?: QuestionCheckPropsType
+}
+export interface QuestionCheckStatPropsType {
+  stat: AnswerStat[]
+  title: string
 }

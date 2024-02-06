@@ -1,7 +1,9 @@
 import { FC } from 'react'
 import { useDispatch } from 'react-redux'
+import { useTitle } from 'ahooks'
 import { changeSelectedId } from '../../../store/componentReducer'
 import useLoadQuestionData from '../../../hooks/useLoadQuestionData.ts'
+import useGetPageInfoData from '../../../hooks/useGetPageInfoData.ts'
 import EditCanvas from './EditCanvas'
 import EditHeader from './EditHeader'
 import LeftPanel from './LeftPanel.tsx'
@@ -11,6 +13,8 @@ export default (() => {
   // const { id = '' } = useParams()
   const dispatch = useDispatch()
   const { loading } = useLoadQuestionData()
+  const { title } = useGetPageInfoData()
+  useTitle(`问卷编辑-${title}`)
   const clearSelectedId = () => {
     dispatch(changeSelectedId(''))
   }

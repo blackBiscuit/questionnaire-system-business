@@ -2,7 +2,7 @@ import { useSelector } from 'react-redux'
 import { StateType } from '../store'
 import { PageInfoType } from '../store/pageInfoReducer'
 const useGetPageInfoData = () => {
-  const { title, desc, js, css,resetTitle } = useSelector<StateType, PageInfoType>(
+  const { title, desc, js, css,resetTitle,isPublished } = useSelector<StateType, PageInfoType>(
     (state) => state.pageInfo
   )
   return {
@@ -10,7 +10,8 @@ const useGetPageInfoData = () => {
     desc,
     js,
     css,
-    resetTitle
+    resetTitle,
+    isPublished
   }
 }
 export default useGetPageInfoData

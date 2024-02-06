@@ -33,13 +33,15 @@ import QuestionRadioConfig, {
   QuestionRadioPropsType,
   QuestionRadioProps,
   QuestionRadioName,
-  QuestionRadioChangePropsType
+  QuestionRadioChangePropsType,
+  QuestionRadioStatPropsType
 } from './QuestionRadio'
 import QuestionCheckConfig, {
   QuestionCheckPropsType,
   QuestionCheckProps,
   QuestionCheckName,
-  QuestionCheckChangePropsType
+  QuestionCheckChangePropsType,
+  QuestionCheckStatPropsType
 } from './QuestionCheckbox'
 // 组件类型 +
 export type QuestionComponentType =
@@ -92,12 +94,17 @@ export type QuestionComponent =
 type GetQuestionComponentProps<T extends QuestionComponentType> = FC<
   PickQuestionComponentType<T>
 >
+type GetQuestionStatProps<T extends QuestionComponentType> = FC<
+  PickQuestionStatComponentType<T>
+>
+
 // 组件基础配置
 export interface ComponentConfigProps<T extends QuestionComponentType> {
   type: QuestionComponentType
   title: string
   Component: GetQuestionComponentProps<T>
   PropsComponent: GetQuestionComponentProps<T>
+  StatComponent?: GetQuestionStatProps<T>
   defaultProps: PickQuestionComponentType<T>
 }
 // 对应后端统一返回类型列表 方便推断 component类型 +
@@ -110,8 +117,28 @@ export interface QuestionComponentListType {
   questionRadio: QuestionRadioPropsType
   questionCheck: QuestionCheckPropsType
 }
+//  方便推断 StatComponent类型 +
+export interface QuestionComponentStatListType {
+  questionInput: unknown
+  questionTitle: unknown
+  questionParagraph: unknown
+  questionInfo: unknown
+  questionTextArea: unknown
+  questionRadio: QuestionRadioStatPropsType
+  questionCheck: QuestionCheckStatPropsType
+}
+
+export type PickQuestionType<
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  T extends Record<QuestionComponentType, any>,
+  U extends QuestionComponentType
+> = T[U]
+// export type PickQuestionComponentType<T extends QuestionComponentType> =
+//   QuestionComponentListType[T]
 export type PickQuestionComponentType<T extends QuestionComponentType> =
-  QuestionComponentListType[T]
+  PickQuestionType<QuestionComponentListType, T>
+export type PickQuestionStatComponentType<T extends QuestionComponentType> =
+  PickQuestionType<QuestionComponentStatListType, T>
 // 获取ComponentConfigProps的联合类型 组件配置联合类型
 export type ComponentConfigUniteProps = {
   [key in QuestionComponentType]: key extends QuestionComponentType

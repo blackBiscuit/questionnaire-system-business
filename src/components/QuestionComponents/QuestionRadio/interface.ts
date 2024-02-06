@@ -1,3 +1,4 @@
+import { AnswerStat } from '../../../types/stat'
 import {
   QuestionPublicProps,
   PropsQuestionComponentPublicProps
@@ -11,6 +12,7 @@ export interface QuestionRadioPropsType {
   isVertical?: boolean
   options: OptionType[]
   value?: string
+  required?: boolean
 }
 export type QuestionRadioChangePropsType =
   PropsQuestionComponentPublicProps<QuestionRadioPropsType> &
@@ -32,11 +34,17 @@ export const QuestionRadioDefaultProps: Required<QuestionRadioPropsType> = {
       value: 'option3'
     }
   ],
-  value: ''
+  value: '',
+  required: false
 }
 export const QUESTION_RADIO_NAME = 'questionRadio'
 export type QuestionRadioName = typeof QUESTION_RADIO_NAME
 export type QuestionRadioProps = QuestionPublicProps & {
   type: QuestionRadioName
   props?: QuestionRadioPropsType
+}
+// 统计类型
+export interface QuestionRadioStatPropsType {
+  stat: AnswerStat[]
+  title:string
 }

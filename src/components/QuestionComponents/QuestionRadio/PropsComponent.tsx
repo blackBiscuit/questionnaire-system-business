@@ -13,11 +13,13 @@ interface FieldType {
   options: OptionType[]
   value: string
   isVertical: boolean
+  required: boolean
 }
 const wrapperName = `wrapper-${ulid()}`
 const optionsName = 'options'
 export default ((props) => {
-  const { title, options, value, isVertical, disabled, onchange } = props
+  const { title, options, value, isVertical, disabled, required, onchange } =
+    props
 
   const [form] = Form.useForm<QuestionRadioPropsType>()
   const handleValueChange = () => {
@@ -29,9 +31,10 @@ export default ((props) => {
       title,
       options,
       value,
-      isVertical
+      isVertical,
+      required
     })
-  }, [title, options, value, isVertical, form])
+  }, [title, options, value, isVertical, required, form])
 
   return (
     <div className={wrapperName}>
@@ -135,14 +138,14 @@ export default ((props) => {
                     type="link"
                     onClick={() => {
                       const options: OptionType[] =
-                      form.getFieldValue(optionsName)
+                        form.getFieldValue(optionsName)
                       const i = options.length + 1
                       add({
                         text: `选项${i}`,
                         value: ulid()
                       })
                       setTimeout(() => {
-                        focusNewOption(wrapperName,'all')
+                        focusNewOption(wrapperName, 'all')
                       }, 0)
                     }}
                     block
@@ -170,6 +173,13 @@ export default ((props) => {
           valuePropName="checked"
         >
           <Checkbox>垂直排列</Checkbox>
+        </Form.Item>
+        <Form.Item<FieldType>
+          name="required"
+          label="是否必填"
+          valuePropName="checked"
+        >
+          <Checkbox>必填</Checkbox>
         </Form.Item>
       </Form>
     </div>

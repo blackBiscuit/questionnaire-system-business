@@ -22,7 +22,7 @@ interface ResTypeFail {
 export type ResType = ResTypeSuccess | ResTypeFail
 
 const aInstance = axios.create({
-  baseURL: 'http://localhost:3000/',
+  baseURL: 'http://localhost:3002/',
   timeout: 10 * 1000
 })
 aInstance.interceptors.request.use((req) => {

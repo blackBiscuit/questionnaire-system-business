@@ -5,7 +5,7 @@ import useNavPage from '../hooks/useNavPage'
 import Loading from '../components/Loading'
 export default (() => {
   const { waitingUserData } = useLoadUserData()
-  useNavPage(waitingUserData)
+   useNavPage(waitingUserData)
   return (
     <>
       <div>

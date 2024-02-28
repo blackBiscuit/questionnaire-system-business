@@ -1,68 +1,42 @@
-import { FC, useEffect, useState } from 'react'
-import { Button, Checkbox, Form, Input, Space, Select } from 'antd'
+import { FC, useEffect } from 'react'
+import { Button, Checkbox, Form, Input, Space } from 'antd'
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons'
 import { ulid } from 'ulid'
 import {
-  QuestionCheckPropsType,
-  QuestionCheckChangePropsType,
-  OptionType
+  QuestionRatePropsType,
+  QuestionRateChangePropsType,
+  RateProps
 } from './interface'
 import { focusNewOption } from '../utils'
 interface FieldType {
   title: string
-  isVertical: boolean
-  list: OptionType[]
-  required: boolean
-  requiredNum: number
+  rates: RateProps[]
+  allowHalf: boolean
 }
-interface SelectOpt {
-  value: number
-  label: string
-}
+/**
+ *  title?: string
+  rates: RateProps[]
+  // required?: boolean
+  allowHalf?: boolean
+ */
 const wrapperName = `wrapper-${ulid()}`
-const optionsName = 'list'
+const optionsName = 'rates'
 export default ((props) => {
-  const { title, list, isVertical, disabled, onchange, required, requiredNum } =
-    props
-  const [requiredNumSelect, setRequiredNumSelect] = useState<SelectOpt[]>([])
-  const [form] = Form.useForm<QuestionCheckPropsType>()
-  const handleValueChange = (changedValues: Partial<FieldType>) => {
-    const newQuestionTitle = form.getFieldsValue()
-    if (typeof changedValues.required === 'boolean') {
-      const { required } = changedValues
-      newQuestionTitle.requiredNum = required ? 1 : 0
-    }
-
-    console.log(newQuestionTitle)
-    onchange && onchange(newQuestionTitle)
+  const { title, rates, allowHalf, disabled, onchange } = props
+  const [form] = Form.useForm<QuestionRatePropsType>()
+  const handleValueChange = () => {
+    const newQuestionInput = form.getFieldsValue()
+    console.log(newQuestionInput)
+    onchange && onchange(newQuestionInput)
   }
   useEffect(() => {
     form.setFieldsValue({
       title,
-      list,
-      isVertical,
-      required,
-      requiredNum
+      rates,
+      allowHalf
     })
-  }, [title, list, isVertical, required, requiredNum, form])
-  useEffect(() => {
-    console.log('need change')
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const ary = list.map<SelectOpt>((_item, i) => {
-      const num = i + 1
-      return { value: num, label: `至少选择${num}项` }
-    })
-    setRequiredNumSelect(
-      required
-        ? ary
-        : [
-            {
-              value: 0,
-              label: '不是必填项'
-            }
-          ]
-    )
-  }, [list, required])
+  }, [title, rates, allowHalf, form])
+
   return (
     <div className={wrapperName}>
       <Form
@@ -72,10 +46,8 @@ export default ((props) => {
         onValuesChange={handleValueChange}
         initialValues={{
           title,
-          list,
-          isVertical,
-          required,
-          requiredNum: required ? 1 : 0
+          rates,
+          allowHalf
         }}
       >
         <Form.Item<FieldType>
@@ -96,8 +68,11 @@ export default ((props) => {
                       style={{ display: 'flex', margin: '0 8px 8px' }}
                       align="baseline"
                     >
+                      <span style={{
+                        color: '#D9272B'
+                      }}>*</span>
                       <Form.Item
-                        name={[name, 'checked']}
+                        name={[name, 'required']}
                         valuePropName="checked"
                       >
                         <Checkbox />
@@ -109,7 +84,7 @@ export default ((props) => {
                           { required: true, message: '选项内容不能为空' },
                           ({ getFieldValue }) => ({
                             validator(_, text) {
-                              const options: OptionType[] =
+                              const options: RateProps[] =
                                 getFieldValue(optionsName)
                               let occurrenceNumber = 0
                               options.forEach((option) => {
@@ -144,7 +119,7 @@ export default ((props) => {
                               .map((verifiedErrors) => verifiedErrors.name)
                             form.validateFields(needValidate)
                           }}
-                          placeholder="选项内容"
+                          placeholder="评分项"
                         />
                       </Form.Item>
                       {fields.length > 1 && (
@@ -171,13 +146,13 @@ export default ((props) => {
                   <Button
                     type="link"
                     onClick={() => {
-                      const options: OptionType[] =
+                      const options: RateProps[] =
                         form.getFieldValue(optionsName)
                       const i = options.length + 1
                       add({
                         text: `选项${i}`,
-                        value: ulid(),
-                        checked: false
+                        value: 5,
+                        key: ulid(),
                       })
                       setTimeout(() => {
                         focusNewOption(wrapperName)
@@ -194,23 +169,13 @@ export default ((props) => {
           </Form.List>
         </Form.Item>
         <Form.Item<FieldType>
-          name="isVertical"
-          label="排列方向"
+          name="allowHalf"
+          label="是否允许半选"
           valuePropName="checked"
         >
-          <Checkbox>垂直排列</Checkbox>
-        </Form.Item>
-        <Form.Item<FieldType>
-          name="required"
-          label="是否必填"
-          valuePropName="checked"
-        >
-          <Checkbox>必填</Checkbox>
-        </Form.Item>
-        <Form.Item<FieldType> name="requiredNum" label="必填几项">
-          <Select disabled={!required} options={requiredNumSelect} />
+          <Checkbox>允许半选</Checkbox>
         </Form.Item>
       </Form>
     </div>
   )
-}) as FC<QuestionCheckChangePropsType>
+}) as FC<QuestionRateChangePropsType>

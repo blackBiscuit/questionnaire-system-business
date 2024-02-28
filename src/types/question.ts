@@ -1,7 +1,7 @@
-import { QuestionComponent } from "../components/QuestionComponents"
+import { QuestionComponent } from '../components/QuestionComponents'
 
 export interface QuestionData {
-  id: string
+  id: number
   title: string
   answerCount: number
   isStar: boolean
@@ -14,7 +14,7 @@ export interface QuestionListData {
   total: number
 }
 export interface QuestionInfo {
-  id: string
+  id: number
   title: string
   desc?: string
   css?: string
@@ -25,4 +25,9 @@ export interface QuestionInfo {
   isPublished?: boolean
   createAt: string
   isDeleted: boolean
+}
+export type UpdateQuestionsOpt = Partial<
+  Omit<QuestionInfo, 'id' | 'createAt'>
+> & {
+  id: number
 }

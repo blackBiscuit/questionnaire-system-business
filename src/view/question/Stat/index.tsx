@@ -40,7 +40,10 @@ export default (() => {
       </div>
     </>
   )
-  const handleSelectedIdAndType = (id: string, type: QuestionComponentType) => {
+  const handleSelectedIdAndType = (
+    id: string,
+    type: QuestionComponentType | null
+  ) => {
     setSelectedComponentId(id)
     setSelectedComponentType(type)
   }
@@ -53,9 +56,7 @@ export default (() => {
           onSelectedIdAndType={handleSelectedIdAndType}
         />
       </div>
-      <div className={styles.main} onClick={() => {
-      
-      }}>
+      <div className={styles.main} onClick={() => {}}>
         <PageStat
           selectedComponentId={selectedComponentId}
           onSelectedIdAndType={handleSelectedIdAndType}

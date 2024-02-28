@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { useRequest } from 'ahooks'
 import { useDispatch } from 'react-redux'
@@ -10,11 +10,13 @@ import { QuestionInfo } from '../types/question'
 
 const useLoadQuestionData = () => {
   const dispatch = useDispatch()
-  const { id = '' } = useParams()
+  const { id = NaN } = useParams()
+  const [noData, setNoData] = useState(false)
   const { run, data, error, loading } = useRequest(
-    async (id: string) => {
-      if (!id) throw new Error('没有问卷 id')
-      const data = await getQuestionServices<QuestionInfo>(id)
+    async (id: number) => {
+      if (isNaN(id)) throw new Error('没有问卷 id')
+      const data = await getQuestionServices<QuestionInfo | null>(+id)
+      console.log(data)
       return data
     },
     {
@@ -22,14 +24,19 @@ const useLoadQuestionData = () => {
     }
   )
   useEffect(() => {
-    if (!data) return
+    if (!data) {
+      setNoData(true)
+      return
+    }
+    setNoData(false)
     const {
       componentList,
       title,
       desc = '',
       js = '',
       css = '',
-      isPublished = false
+      isPublished = false,
+      answerCount
     } = data
     const selectedId =
       componentList.length > 0 ? componentList[0].component_id : ''
@@ -47,18 +54,20 @@ const useLoadQuestionData = () => {
         js,
         css,
         resetTitle: title,
-        isPublished
+        isPublished,
+        answerCount
       })
     )
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data])
   useEffect(() => {
-    run(id)
+    run(+id)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id])
   return {
     loading,
-    error
+    error,
+    noData
   }
 }
 export default useLoadQuestionData

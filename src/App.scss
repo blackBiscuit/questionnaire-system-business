@@ -6,3 +6,11 @@ div[role='button'] {
     display: none;
   }
 }
+.question-disabled-wrapper {
+  cursor: not-allowed;
+
+  filter: opacity(0.5);
+}
+.question-disabled {
+  pointer-events: none;
+}

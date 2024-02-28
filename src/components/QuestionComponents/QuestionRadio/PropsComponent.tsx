@@ -161,10 +161,16 @@ export default ((props) => {
 
         <Form.Item<FieldType> name="value" label="默认选中">
           <Select
-            options={options.map((option) => ({
-              label: option.text || '',
-              value: option.value
-            }))}
+            options={[
+              {
+                label: '没有默认选中',
+                value: ''
+              },
+              ...options.map((option) => ({
+                label: option.text || '',
+                value: option.value
+              }))
+            ]}
           />
         </Form.Item>
         <Form.Item<FieldType>

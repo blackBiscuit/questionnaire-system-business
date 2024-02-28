@@ -60,13 +60,15 @@ export default (() => {
       key: 'createAt'
     }
   ]
-  const [selectionKeys, setSelectionKeys] = useState<string[]>([])
+  const [selectionKeys, setSelectionKeys] = useState<number[]>([])
   const { run: recoverRun } = useRequest(
     async () => {
-      const lists = selectionKeys.map<Partial<QuestionData>>((id) => ({
-        id,
-        isDeleted: false
-      }))
+      const lists = selectionKeys.map<Partial<QuestionData> & { id: number }>(
+        (id) => ({
+          id,
+          isDeleted: false
+        })
+      )
       return await updateQuestionsServices(lists)
     },
     {
@@ -120,7 +122,7 @@ export default (() => {
       {loading && <Loading />}
       {!loading && (
         <>
-          {questions.filter((question) => question.isStar).length > 0 ? (
+          {questions.length > 0 ? (
             <>
               <div className={styles['question-list-content']}>
                 <Space
@@ -150,7 +152,8 @@ export default (() => {
                     type: 'checkbox',
                     onChange: (selectedRowKeys: React.Key[]) => {
                       //useState
-                      setSelectionKeys(selectedRowKeys as string[])
+                      console.log(selectedRowKeys)
+                      setSelectionKeys(selectedRowKeys as number[])
                     }
                   }}
                   rowKey={'id'}

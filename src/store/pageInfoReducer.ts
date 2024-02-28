@@ -12,7 +12,6 @@ import { QuestionInfo } from '../types/question'
 type OmitName =
   | 'id'
   | 'componentList'
-  | 'answerCount'
   | 'createAt'
   | 'isStar'
   | 'isDeleted'
@@ -23,7 +22,8 @@ const INIT_STATE: PageInfoType = {
   resetTitle: '',
   desc: '',
   js: '',
-  css: ''
+  css: '',
+  answerCount:0
 }
 export const pageInfoSlice = createSlice({
   name: 'pageInfo',

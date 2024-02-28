@@ -1,6 +1,9 @@
 import axios from 'axios'
 import Nprogress from 'nprogress'
 import { message } from 'antd'
+import { getToken } from '../utils/userInfo'
+import { isLoginOrRegister } from '../router'
+
 // type Enumerate<
 //   T extends number,
 //   R extends number[] = []
@@ -25,10 +28,33 @@ const aInstance = axios.create({
   baseURL: 'http://localhost:3002/',
   timeout: 10 * 1000
 })
-aInstance.interceptors.request.use((req) => {
-  Nprogress.start()
-  return req
-})
+export const controller = new AbortController()
+aInstance.interceptors.request.use(
+  (req) => {
+    Nprogress.start()
+    const token = getToken()
+    if (token) {
+      req.headers.Authorization = `Bearer ${token}`
+    } else {
+      // const includeApi = [
+      //   '/api/user/register',
+      //   '/api/user/email/code',
+      //   '/api/user/login'
+      // ]
+
+      if (
+        req.url === '/api/user/info' &&
+        isLoginOrRegister(location.pathname)
+      ) {
+        //  return Promise.reject('')
+     
+        controller.abort()
+      }
+    }
+    //req.headers
+    return req
+  }
+)
 aInstance.interceptors.response.use(
   (res) => {
     Nprogress.done()
@@ -42,8 +68,10 @@ aInstance.interceptors.response.use(
       return (resData as ResTypeSuccess).data as any
     }
   },
-  () => {
+  (res) => {
+    console.log(res)
     Nprogress.done()
+    return Promise.reject(new Error(res.response?.data?.msg))
   }
 )
 export default aInstance

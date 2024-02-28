@@ -1,4 +1,5 @@
 import { FC, useEffect } from 'react'
+import { useDispatch } from 'react-redux'
 import { useRequest } from 'ahooks'
 import { LockOutlined, UserAddOutlined, UserOutlined } from '@ant-design/icons'
 import { Button, Checkbox, Form, Input, message } from 'antd'
@@ -7,7 +8,9 @@ import { MANAGE_LIST_PATHNAME, REGISTER_PATHNAME } from '../router'
 import styles from './Login.module.scss'
 import { userLoginServices } from '../services/user'
 import { LoginParams, LoginResponse } from '../types/user'
-import { setToken, setUserInfo } from '../utils/userInfo'
+import { setToken } from '../utils/userInfo'
+import { loginReducer } from '../store/userReducer'
+
 type FieldType = {
   password?: string
   email?: string
@@ -31,6 +34,7 @@ const getUserInfo = () => {
 }
 export default (() => {
   const navigate = useNavigate()
+  const dispatch = useDispatch()
   const [form] = Form.useForm()
   const [searchParams] = useSearchParams()
   const { run, loading } = useRequest(
@@ -40,11 +44,19 @@ export default (() => {
     {
       manual: true,
       onSuccess(data) {
+        console.log(data)
+        const { username, email } = data.userInfo
         setToken(data.token)
-        setUserInfo(data.userInfo)
-        message.success(`欢迎回来😊,${data.userInfo.username}`)
+        dispatch(
+          loginReducer({
+            email,
+            username
+          })
+        )
+        message.success(`欢迎回来😊,${username}`)
         navigate(MANAGE_LIST_PATHNAME)
-      }
+      },
+     // onError() {}
     }
   )
   const _email = searchParams.get('email')

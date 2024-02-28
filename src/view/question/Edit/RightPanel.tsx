@@ -4,6 +4,7 @@ import { FileTextOutlined, SettingOutlined } from '@ant-design/icons'
 import useGetComponentInfo from '../../../hooks/useGetComponentInfo'
 import ComponentProps from './ComponentProps'
 import PageSetting from './PageSetting'
+import styles from './height.module.scss'
 enum TAB_KEYS {
   PROPS = 'props',
   SETTING = 'setting'
@@ -20,7 +21,7 @@ export default (() => {
         </span>
       ),
       children: (
-        <div>
+        <div className={styles['question-height']}>
           <ComponentProps />
         </div>
       )

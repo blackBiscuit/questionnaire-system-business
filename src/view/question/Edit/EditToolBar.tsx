@@ -23,6 +23,7 @@ import {
 } from '../../../store/componentReducer'
 import useGetComponentInfo from '../../../hooks/useGetComponentInfo'
 import useGetUndoInfo from '../../../hooks/useGetUndoInfo'
+
 export default (() => {
   const dispatch = useDispatch()
   const { selectedId, selectedComponent, copiedComponent, componentList } =

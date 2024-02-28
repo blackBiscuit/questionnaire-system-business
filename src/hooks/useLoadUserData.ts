@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useDispatch } from 'react-redux'
+import { message } from 'antd'
 import { useRequest } from 'ahooks'
 import useGetUserInfo from './useGetUserInfo'
 import { loginReducer } from '../store/userReducer'
@@ -20,6 +21,12 @@ const useLoadUserData = () => {
     },
     onFinally() {
       setWaitingUserData(false)
+    },
+    onError(err) {
+      console.log(err)
+      if (err.message) {
+        message.error(err.message)
+      }
     }
   })
   const { email } = useGetUserInfo()

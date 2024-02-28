@@ -2,6 +2,7 @@ import { FC, ReactNode } from 'react'
 import {
   DndContext,
   closestCenter,
+  KeyboardSensor,
   MouseSensor,
   useSensor,
   useSensors,
@@ -9,6 +10,7 @@ import {
 } from '@dnd-kit/core'
 import {
   SortableContext,
+  sortableKeyboardCoordinates,
   verticalListSortingStrategy
 } from '@dnd-kit/sortable'
 interface Props {
@@ -28,6 +30,9 @@ export default ((props) => {
         //需要拖拽8px才会触发拖拽行为 避免和click event 冲突
         distance: 8
       }
+    }),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates
     })
   )
   function handleDragEnd(event: DragEndEvent) {
@@ -50,6 +55,7 @@ export default ((props) => {
       sensors={sensors}
       collisionDetection={closestCenter}
       onDragEnd={handleDragEnd}
+      
     >
       <SortableContext items={items} strategy={verticalListSortingStrategy}>
         {children}

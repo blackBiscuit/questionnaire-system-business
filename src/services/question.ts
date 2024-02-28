@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { QuestionData, QuestionInfo } from '../types/question'
+import { QuestionInfo, UpdateQuestionsOpt } from '../types/question'
 import axios from './ajax'
+//0 | 1
 interface SearchOption {
   keyword: string
   isStar: number
@@ -8,8 +9,8 @@ interface SearchOption {
   page: number
   pageSize: number
 }
-export const getQuestionServices = async <T extends Record<string, any>>(
-  id: string
+export const getQuestionServices = async <T extends Record<string, any> | null>(
+  id: number
 ): Promise<T> => {
   const url = `api/question/${id}`
   const data = (await axios.get(url)) as T
@@ -31,15 +32,15 @@ export const createQuestionServices = async <
   return data
 }
 export const updateQuestionServices = async <T extends Record<string, any>>(
-  id: string,
-  opt?: Partial<QuestionInfo>
+  id: number,
+  opt?: Partial<Omit<QuestionInfo, 'id'>>
 ) => {
   const url = `/api/question/update/${id}`
   const data = (await axios.patch(url, opt)) as T
   return data
 }
 export const updateQuestionsServices = async <T extends Record<string, any>>(
-  list?: Array<Partial<QuestionData>>
+  list?: Array<UpdateQuestionsOpt>
 ) => {
   const url = '/api/questions/update'
   const data = (await axios.patch(url, {
@@ -48,7 +49,7 @@ export const updateQuestionsServices = async <T extends Record<string, any>>(
   return data
 }
 export const duplicateQuestionServices = async <T extends Record<string, any>>(
-  id: string
+  id: number
 ) => {
   const url = `/api/question/duplicate/${id}`
   const data = (await axios.post(url)) as T
@@ -56,7 +57,7 @@ export const duplicateQuestionServices = async <T extends Record<string, any>>(
 }
 
 export const deleteQuestionsServices = async <T extends Record<string, any>>(
-  ids: string[]
+  ids: number[]
 ) => {
   const url = '/api/question'
   return (await axios.delete(url, {
@@ -64,4 +65,19 @@ export const deleteQuestionsServices = async <T extends Record<string, any>>(
       ids
     }
   })) as T
+}
+export const publishedQuestionServices = async <T extends Record<string, any>>(
+  id: number,
+  published: boolean
+) => {
+  const url = `/api/question/published/${id}`
+  return (await axios.patch(url, {
+    published
+  })) as T
+}
+export const publishedChangedServices = async <T extends Record<string, any>>(
+  id: number
+) => {
+  const url = `/api/question/published/changed/${id}`
+  return (await axios.get(url)) as T
 }

@@ -83,9 +83,10 @@ export const REGISTER_PATHNAME = '/register'
 export const MANAGE_LIST_PATHNAME = '/manage/list'
 export const QUESTION_STAT = '/question/stat'
 export const QUESTION_EDIT = '/question/edit'
+export const NO_LOGIN_LIST = [LOGIN_PATHNAME, REGISTER_PATHNAME]
 export const isLoginOrRegister = (pathname: string) => {
-  const filterAry = [LOGIN_PATHNAME, REGISTER_PATHNAME]
-  return filterAry.includes(pathname) ? true : false
+  const NO_LOGIN_LIST = [LOGIN_PATHNAME, REGISTER_PATHNAME]
+  return NO_LOGIN_LIST.includes(pathname) ? true : false
 }
 const noNeedUserInfoAry = [LOGIN_PATHNAME, HOME_PATHNAME, REGISTER_PATHNAME]
 export const isNoNeedUserInfo = (pathname: string) =>

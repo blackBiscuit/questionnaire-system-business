@@ -1,15 +1,207 @@
 import { FC, useMemo, useState } from 'react'
-import { Button, Modal } from 'antd'
-import { Pie, PieChart, Cell, Tooltip, ResponsiveContainer } from 'recharts'
-import { QuestionRadioStatPropsType } from './interface'
+import { Button, Modal, Radio, Table, Slider, Typography } from 'antd'
+import type { ColumnsType } from 'antd/es/table'
+import {
+  Pie,
+  PieChart,
+  Cell,
+  Tooltip,
+  BarChart,
+  CartesianGrid,
+  XAxis,
+  YAxis,
+  Legend,
+  Bar,
+  ComposedChart,
+  LineChart,
+  Line
+} from 'recharts'
+import {
+  ChartType,
+  QuestionRadioStatPropsType,
+  statTypeList
+} from './interface'
 import { AnswerStat } from '../../../types/stat'
-import { STAT_PIE_COLORS } from '../../../const/stat'
+import { STAT_COLORS, STAT_PIE_COLORS } from '../../../const/stat'
 import { format } from '../../../utils'
+import { ulid } from 'ulid'
+interface DataType {
+  option: string
+  count: number
+  proportion: number
+}
+const { Title } = Typography
 export default ((props) => {
   const { stat, title } = props
   const [isModalOpen, setIsModalOpen] = useState(false)
-  
-  const getChart = (width = 500) => {
+  const [statType, setStatType] = useState<ChartType>('pie')
+  const filterStat = stat.filter((item) => item.count !== 0)
+  const getChart = (type: ChartType, width = 500) => {
+    let Component = (
+      <PieChart
+        width={width}
+        height={400}
+        margin={{
+          top: 20,
+          right: 20,
+          bottom: 20,
+          left: 20
+        }}
+      >
+        <Pie
+          isAnimationActive={true}
+          width={width}
+          height={400}
+          data={filterStat}
+          dataKey="count"
+          //  nameKey="name"
+          cx="50%"
+          cy="50%"
+          outerRadius={100} //直径
+          fill="#8884d8"
+          label={(item: AnswerStat) =>
+            `${item.name}:${format(item.count / sum)}%`
+          }
+        >
+          {stat.map((_item, i) => (
+            <Cell key={ulid()} fill={STAT_PIE_COLORS[i]} />
+          ))}
+        </Pie>
+        <Tooltip />
+      </PieChart>
+    )
+    if (type === 'line') {
+      Component = (
+        <BarChart
+          data={stat}
+          width={width}
+          height={400}
+          margin={{ top: 5, right: 30, left: 0, bottom: 5 }}
+        >
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis dataKey="name" />
+          <YAxis />
+          <Bar dataKey="count">
+            {stat.map((_item, i) => (
+              <Cell key={i} fill={STAT_COLORS[i]} />
+            ))}
+          </Bar>
+          <Tooltip />
+        </BarChart>
+      )
+    }
+    if (type === 'bar') {
+      const size = (400 - 50) / stat.length < 20 ? 20 : (400 - 50) / stat.length
+      Component = (
+        <ComposedChart
+          layout="vertical"
+          width={width}
+          height={400}
+          data={stat}
+          margin={{
+            top: 20,
+            right: 20,
+            bottom: 20,
+            left: 20
+          }}
+        >
+          <CartesianGrid stroke="#f5f5f5" />
+          <XAxis type="number" />
+          <YAxis dataKey="name" type="category" scale="band" />
+          <Tooltip />
+          <Legend />
+
+          <Bar dataKey="count" barSize={size} fill={STAT_COLORS[4]}>
+            {stat.map((_item, i) => (
+              <Cell key={i} fill={STAT_COLORS[i]} />
+            ))}
+          </Bar>
+        </ComposedChart>
+      )
+    }
+    if (type === 'brokenLine') {
+      Component = (
+        <LineChart
+          width={width}
+          height={400}
+          data={stat}
+          margin={{
+            top: 5,
+            right: 30,
+            left: 20,
+            bottom: 5
+          }}
+        >
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis dataKey="name" />
+          <YAxis />
+          <Tooltip />
+          <Legend />
+          <Line
+            type="monotone"
+            dataKey="count"
+            stroke="#8884d8"
+            activeDot={{ r: 8 }}
+          />
+        </LineChart>
+      )
+    }
+    if (type === 'table') {
+      const columns: ColumnsType<DataType> = [
+        {
+          title: '选项',
+          dataIndex: 'option',
+          key: 'option'
+        },
+        {
+          title: '小计',
+          dataIndex: 'count',
+          key: 'count',
+          sorter: (a, b) => a.count - b.count,
+        },
+        {
+          title: '比例',
+          dataIndex: 'proportion',
+          key: 'proportion',
+          width: 300,
+          render: (proportion: number) => {
+            const v = Math.round(proportion * 100)
+            return (
+              <>
+                <div
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center'
+                  }}
+                >
+                  <div
+                    style={{
+                      flex: 1,
+                      marginRight: '8px'
+                    }}
+                  >
+                    <Slider
+                      //   tooltip={open ? { open } : {}}
+                      value={v}
+                    />
+                  </div>
+                  {`${v}%`}
+                </div>
+              </>
+            )
+          }
+        }
+      ]
+      const dataSource = stat.map((item) => ({
+        key: item.name,
+        option: item.name,
+        count: item.count,
+        proportion: item.count / sum
+      }))
+      Component = (
+        <Table pagination={false} columns={columns} dataSource={dataSource} />
+      )
+    }
     return (
       <div
         style={{
@@ -17,28 +209,7 @@ export default ((props) => {
           height: '400px'
         }}
       >
-        <ResponsiveContainer width="100%" height="100%">
-          <PieChart>
-            <Pie
-              width={width}
-              data={stat}
-              dataKey="count"
-              nameKey="name"
-              cx="50%"
-              cy="50%"
-              outerRadius={100} //直径
-              fill="#8884d8"
-              label={(item: AnswerStat) =>
-                `${item.name}:${format(item.count / sum)}%`
-              }
-            >
-              {stat.map((_item, i) => (
-                <Cell key={i} fill={STAT_PIE_COLORS[i]} />
-              ))}
-            </Pie>
-            <Tooltip />
-          </PieChart>
-        </ResponsiveContainer>
+        {Component}
       </div>
     )
   }
@@ -52,26 +223,58 @@ export default ((props) => {
   const sum = useMemo(() => {
     return stat.reduce((pre, current) => pre + current.count, 0)
   }, [stat])
+  const modalTitle = (
+    <>
+      <Title level={3} style={{ fontSize: '16px' }}>
+        {title}
+      </Title>
+      <Radio.Group
+        value={statType}
+        onChange={(e) => setStatType(e.target.value)}
+      >
+        {statTypeList.map((item) => {
+          return (
+            <Radio.Button value={item.type} key={item.type}>
+              {item.text}
+            </Radio.Button>
+          )
+        })}
+      </Radio.Group>
+    </>
+  )
   return (
     <div>
+      <Radio.Group
+        value={statType}
+        onChange={(e) => setStatType(e.target.value)}
+      >
+        {statTypeList.map((item) => {
+          return (
+            <Radio.Button value={item.type} key={item.type}>
+              {item.text}
+            </Radio.Button>
+          )
+        })}
+      </Radio.Group>
+
       <div
         style={{ overflowX: 'auto', overflowY: 'hidden', marginBottom: '30px' }}
       >
-        {getChart(500)}
+        {getChart(statType, 500)}
       </div>
       <Modal
-        title={title}
+        title={modalTitle}
         width={900}
         open={isModalOpen}
         onOk={handleOk}
         onCancel={handleCancel}
-        footer={[
+        footer={() => (
           <Button type="primary" onClick={handleCancel}>
             关闭
           </Button>
-        ]}
+        )}
       >
-        {getChart(800)}
+        {getChart(statType, 800)}
       </Modal>
       <Button
         block
@@ -85,3 +288,24 @@ export default ((props) => {
     </div>
   )
 }) as FC<QuestionRadioStatPropsType>
+/**
+ * props :{
+ * title: '',
+ * list: [
+ * text: '',
+ * id: '',
+ * value: ''
+ * ]
+ * }
+ *
+ *
+ * 提交
+ * [
+ *  {
+ *  '选项1' : 1
+ * },
+ * {
+ * '选项2': 2
+ * }
+ * ]
+ */

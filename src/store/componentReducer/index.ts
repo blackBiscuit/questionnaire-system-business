@@ -201,16 +201,19 @@ export const componentSlice = createSlice({
     ),
     //将组件插入到指定位置
     insertComponentReducer: produce(
-      (draft: ComponentsStateType, action: PayloadAction<number>) => {
-        const { componentList, selectedId } = draft
-        const index = action.payload
-        const currentIndex = componentList.findIndex(
-          (c) => c.component_id === selectedId
-        )
-        if (currentIndex < 0) return
-        const currentComponent = componentList[currentIndex]
-        componentList.splice(currentIndex, 1)
-        componentList.splice(index, 0, currentComponent)
+      (
+        draft: ComponentsStateType,
+        action: PayloadAction<{
+          newIndex: number
+          oldIndex: number
+        }>
+      ) => {
+        const { componentList } = draft
+        const { oldIndex, newIndex } = action.payload
+      
+        const currentComponent = componentList[oldIndex]
+        componentList.splice(oldIndex, 1)
+        componentList.splice(newIndex, 0, currentComponent)
       }
     ),
 

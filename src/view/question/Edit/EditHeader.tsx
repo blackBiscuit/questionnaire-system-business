@@ -10,6 +10,7 @@ import PublishButton from './PublishButton'
 import useGetPageInfoData from '../../../hooks/useGetPageInfoData'
 import { changePageTitleReducer } from '../../../store/pageInfoReducer'
 import styles from './EditHeader.module.scss'
+import CancelPublishButton from './CancelPublishButton'
 export default (() => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -50,6 +51,7 @@ export default (() => {
           <Space>
             <SaveButton />
             <PublishButton />
+            <CancelPublishButton />
           </Space>
         </div>
       </div>

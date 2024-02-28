@@ -3,6 +3,7 @@ import { Tabs } from 'antd'
 import { AppstoreAddOutlined, BarsOutlined } from '@ant-design/icons'
 import ComponentLibrary from './ComponentLibrary'
 import Layer from './Layer'
+import styles from './height.module.scss'
 export default (() => {
   const itemsAry = [
     {
@@ -13,7 +14,7 @@ export default (() => {
         </span>
       ),
       children: (
-        <div>
+        <div className={styles['question-height']}>
           <ComponentLibrary />
         </div>
       )

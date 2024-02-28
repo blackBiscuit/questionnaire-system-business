@@ -28,6 +28,7 @@ export default (() => {
     dispatch(changeComponentReducer(newQuestionProps))
   }
   return (
-    <PropsComponent {...props} onchange={handleChange} disabled={isLocked} />
+   
+      <PropsComponent {...props} onchange={handleChange} disabled={isLocked} />
   )
 }) as FC

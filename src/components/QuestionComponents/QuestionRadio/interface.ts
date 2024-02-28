@@ -44,7 +44,62 @@ export type QuestionRadioProps = QuestionPublicProps & {
   props?: QuestionRadioPropsType
 }
 // 统计类型
+// export type ChartType =
+//   | {
+//       type: 'pie'
+//       text: '饼图'
+//     }
+//   | {
+//       type: 'line'
+//       text: '柱状图'
+//     }
+//   | {
+//       type: 'brokenLine'
+//       text: '折线图'
+//     }
+//   | {
+//       type: 'bar'
+//       text: '条形图'
+//     }
+//   | {
+//       type: 'table'
+//       text: '表格'
+//     }
+export const chartTypeList = {
+  pie: '饼图',
+  line: '柱状图',
+  bar: '条形图',
+  brokenLine: '折线图', 
+  table: '表格'
+} as const
+export type ChartType = 'pie' | 'line' | 'brokenLine' | 'bar' | 'table'
+export const getChartType = (type: ChartType) => chartTypeList[type]
+export const statTypeList = Object.keys(chartTypeList).map((key) => ({
+  type: key,
+  text: chartTypeList[key as ChartType]
+}))
+// | {
+//     type: 'pie'
+//     text: '饼图'
+//   }
+// | {
+//     type: 'line'
+//     text: '柱状图'
+//   }
+// | {
+//     type: 'brokenLine'
+//     text: '折线图'
+//   }
+// | {
+//     type: 'bar'
+//     text: '条形图'
+//   }
+// | {
+//     type: 'table'
+//     text: '表格'
+//   }
 export interface QuestionRadioStatPropsType {
   stat: AnswerStat[]
-  title:string
+  title: string
+  // chartTypes: ChartType[]
 }

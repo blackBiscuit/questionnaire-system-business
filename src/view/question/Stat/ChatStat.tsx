@@ -36,6 +36,7 @@ export default ((props) => {
     if (!StatComponent) {
       return <div>该组件无统计图表</div>
     }
+    console.log(selectedTitle, stat)
     return <StatComponent title={selectedTitle} stat={stat} />
   }
   const { run } = useRequest(
@@ -67,6 +68,7 @@ export default ((props) => {
       }
     >
       <Title level={3}>图表统计</Title>
+
       <div>{getElement()}</div>
     </div>
   )

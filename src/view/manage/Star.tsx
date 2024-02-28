@@ -27,7 +27,8 @@ export default (() => {
       const data = await getQuestionListServices<QuestionListData>({
         page,
         pageSize: DEFAULT_LIST_PAGE_SIZE,
-        keyword
+        keyword,
+        isStar: 1
       })
       return data
     },
@@ -45,6 +46,11 @@ export default (() => {
   const haveMoreData = useMemo(() => {
     return questions.length < total
   }, [total, questions])
+  const handChangeStar = (id: number, isStar: boolean) => {
+    if (isStar) return
+    const newQuestion = questions.filter((question) => question.id !== id)
+    setQuestions(newQuestion)
+  }
   useObserver(
     useMemo(() => {
       return () => {
@@ -94,8 +100,9 @@ export default (() => {
   const loadMoreContent = useMemo(() => {
     if (loading) return <Loading />
     if (total === 0) return <Empty description="暂无数据" />
-    if (!haveMoreData) return <span>没有更多了！</span>
-    return <span className="loading-test">loading</span>
+    if (!haveMoreData && total > DEFAULT_LIST_PAGE_SIZE)
+      return <span>没有更多了！</span>
+    return <></>
   }, [loading, total, haveMoreData])
   return (
     <div className={styles['lists-wrapper']}>
@@ -108,7 +115,11 @@ export default (() => {
       <>
         <div className={styles['question-list-content']}>
           {questions.map((question) => (
-            <QuestionCard {...question} key={question.id} />
+            <QuestionCard
+              {...question}
+              key={question.id}
+              onChangeStar={handChangeStar}
+            />
           ))}
         </div>
         <div className={styles['question-pagination-container']}>

@@ -17,18 +17,29 @@ import {
 } from '../services/question'
 import styles from './QuestionCard.module.scss'
 interface Props {
-  id: string
+  id: number
   title: string
   answerCount: number
   isStar: boolean
   isPublished: boolean
   createAt: string
+  onChangeStar?: (id: number, isStar: boolean) => void
 }
 const { confirm } = Modal
 export default ((props) => {
+  const {
+    title,
+    answerCount,
+    isPublished,
+    createAt,
+    id,
+    isStar: _isStar,
+    onChangeStar
+  } = props
   const [isDeletedState, setIsDeleteState] = useState(false)
+  const [isStar, setIsStar] = useState(_isStar)
   const navigate = useNavigate()
-  const { title, answerCount, isPublished, createAt, id, isStar } = props
+
   const { loading: duplicateLoading, run: runDuplicate } = useRequest(
     async () => {
       const data = await duplicateQuestionServices<{ id: string }>(id)
@@ -52,6 +63,21 @@ export default ((props) => {
       onSuccess() {
         message.success('删除成功，若需要恢复请前往回收站查看')
         setIsDeleteState(true)
+      }
+    }
+  )
+  const { loading: starLoading, run: runStar } = useRequest(
+    async () =>
+      await updateQuestionServices(id, {
+        isStar: !isStar
+      }),
+    {
+      manual: true,
+      onSuccess() {
+        const msg = isStar ? '取消收藏成功' : '收藏成功'
+        message.success(msg)
+        onChangeStar?.(id, !isStar)
+        setIsStar(!isStar)
       }
     }
   )
@@ -133,6 +159,7 @@ export default ((props) => {
             <Button
               type="text"
               size="small"
+              disabled={starLoading}
               icon={
                 isStar ? (
                   <StarFilled style={{ color: '#D1A20E' }} />
@@ -140,7 +167,9 @@ export default ((props) => {
                   <StarOutlined />
                 )
               }
-              onClick={() => {}}
+              onClick={() => {
+                runStar()
+              }}
             >
               {isStar ? '取消标星' : '标星'}
             </Button>

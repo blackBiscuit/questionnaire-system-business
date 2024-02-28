@@ -4,6 +4,7 @@ import { Spin, message } from 'antd'
 import classNames from 'classnames'
 import {
   changeSelectedId,
+  insertComponentReducer,
   moveComponentReducer
 } from '../../../store/componentReducer'
 import useGetComponentInfo from '../../../hooks/useGetComponentInfo'
@@ -17,6 +18,7 @@ import SortableItem from '../../../components/DragSortable/SortableItem'
 import styles from './EditCanvas.module.scss'
 import { ComponentInfoType } from '../../../store/componentReducer'
 import useBindCanvasKeyPress from '../../../hooks/useBindCanvasKeyPress'
+import useDownShift from '../../../hooks/useDownShift'
 interface Props {
   loading?: boolean
 }
@@ -39,6 +41,7 @@ const getComponent = (componentInfo: ComponentInfoType) => {
 }
 export default ((props) => {
   const dispatch = useDispatch()
+  const downShift = useDownShift()
   const { loading } = props
   const { componentList, selectedId } = useGetComponentInfo()
   useBindCanvasKeyPress()
@@ -62,6 +65,11 @@ export default ((props) => {
   const handleDragEnd = (oldIndex: number, newIndex: number) => {
     if (componentList[oldIndex].isLocked || componentList[newIndex].isLocked) {
       message.info('不能选中锁定的组件')
+      return
+    }
+    console.log(downShift)
+    if (downShift) {
+      dispatch(insertComponentReducer({ oldIndex, newIndex }))
       return
     }
     dispatch(moveComponentReducer({ oldIndex, newIndex }))

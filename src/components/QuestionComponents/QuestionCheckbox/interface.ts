@@ -13,6 +13,7 @@ export interface QuestionCheckPropsType {
   isVertical?: boolean
   list: OptionType[]
   required?: boolean
+  requiredNum: number
 }
 export type QuestionCheckChangePropsType =
   PropsQuestionComponentPublicProps<QuestionCheckPropsType> &
@@ -37,7 +38,8 @@ export const QuestionCheckDefaultProps: Required<QuestionCheckPropsType> = {
       checked: false
     }
   ],
-  required: false
+  required: false,
+  requiredNum: 0
 }
 export const QUESTION_CHECK_NAME = 'questionCheck'
 export type QuestionCheckName = typeof QUESTION_CHECK_NAME
@@ -49,3 +51,16 @@ export interface QuestionCheckStatPropsType {
   stat: AnswerStat[]
   title: string
 }
+export const chartTypeList = {
+  pie: '饼图',
+  line: '柱状图',
+  bar: '条形图',
+  brokenLine: '折线图',
+  table: '表格'
+} as const
+export type ChartType = 'pie' | 'line' | 'brokenLine' | 'bar' | 'table'
+export const getChartType = (type: ChartType) => chartTypeList[type]
+export const statTypeList = Object.keys(chartTypeList).map((key) => ({
+  type: key,
+  text: chartTypeList[key as ChartType]
+}))

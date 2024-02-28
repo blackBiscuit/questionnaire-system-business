@@ -13,7 +13,7 @@ export default (() => {
   const { loading, run: save } = useRequest(
     async () => {
       if (!id) return
-      await updateQuestionServices(id, {
+      await updateQuestionServices(+id, {
         title,
         desc,
         js,

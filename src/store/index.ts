@@ -24,6 +24,10 @@ const store = configureStore<StateType>({
       ])
     }),
     pageInfo: pageInfoReducer
-  }
+  },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: false
+    })
 })
 export default store

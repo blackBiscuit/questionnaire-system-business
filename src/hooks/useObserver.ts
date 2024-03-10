@@ -16,7 +16,6 @@ const useObserver = <T extends Element = Element>(
   useEffect(() => {
     intersectionObserver.current = new IntersectionObserver((entries) => {
       if (entries[0].isIntersecting) {
-        console.log('i am here')
         callback()
       }
     })

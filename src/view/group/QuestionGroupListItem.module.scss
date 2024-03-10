@@ -1,0 +1,22 @@
+.item-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  line-height: 60px;
+  border-bottom: 1px dashed #e1e3e5;
+  .item-title {
+    font-size: 14px;
+    color: #333;
+    cursor: pointer;
+    &:hover {
+      color: #1f7eff;
+    }
+  }
+  .item-right {
+    font-size: 14px;
+    color: #999;
+  }
+  .item-create-at {
+   margin-right: 8px;
+  }
+}

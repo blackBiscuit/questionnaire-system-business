@@ -4,7 +4,7 @@ import useLoadUserData from '../hooks/useLoadUserData'
 import useNavPage from '../hooks/useNavPage'
 import Loading from '../components/Loading'
 export default (() => {
-  const { waitingUserData } = useLoadUserData()
+  const { waitingUserData, } = useLoadUserData()
    useNavPage(waitingUserData)
   return (
     <>

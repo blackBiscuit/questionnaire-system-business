@@ -9,7 +9,6 @@ import {
 } from '../../../components/QuestionComponents'
 import useGetComponentInfo from '../../../hooks/useGetComponentInfo'
 import { changeComponentReducer } from '../../../store/componentReducer'
-
 export default (() => {
   const dispatch = useDispatch()
   const { selectedComponent } = useGetComponentInfo()
@@ -27,8 +26,15 @@ export default (() => {
     }
     dispatch(changeComponentReducer(newQuestionProps))
   }
+  const { defaultProps } = componentConfig
   return (
-   
-      <PropsComponent {...props} onchange={handleChange} disabled={isLocked} />
+    <PropsComponent
+      {...{
+        ...defaultProps,
+        ...props
+      }}
+      onchange={handleChange}
+      disabled={isLocked}
+    />
   )
 }) as FC

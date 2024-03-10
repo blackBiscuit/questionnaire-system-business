@@ -53,7 +53,6 @@ export default (() => {
     if (!selectedId) return
     const newTitle = target.value.trim() || title
     dispatch(changeComponentTitleReducer(newTitle))
-    console.log(newTitle)
   }
   const changeHidden = (id: string, hidden: boolean) => {
     dispatch(

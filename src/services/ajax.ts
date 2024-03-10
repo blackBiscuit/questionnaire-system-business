@@ -69,7 +69,6 @@ aInstance.interceptors.response.use(
     }
   },
   (res) => {
-    console.log(res)
     Nprogress.done()
     return Promise.reject(new Error(res.response?.data?.msg))
   }

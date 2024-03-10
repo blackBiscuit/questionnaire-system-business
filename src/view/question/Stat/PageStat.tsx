@@ -1,42 +1,40 @@
-import { FC, useState, useEffect, MouseEvent } from 'react'
-import { useParams } from 'react-router-dom'
-import { Typography, Table, Pagination } from 'antd'
-import { useRequest } from 'ahooks'
+import { FC, MouseEvent } from 'react'
+import { Typography, Table } from 'antd'
 import type { ColumnsType, ColumnType } from 'antd/es/table'
 import Loading from '../../../components/Loading'
-import { getQuestionStatListServices } from '../../../services/stat'
-import { StatQuestion, AnswerProps } from '../../../types/stat'
 import useGetComponentInfo from '../../../hooks/useGetComponentInfo'
 import { QuestionComponentType } from '../../../components/QuestionComponents'
-import { DEFAULT_STAT_PAGE_SIZE } from '../../../const'
+import useGetQuestionStat from '../../../hooks/useGetQuestionStat'
+import StatPagination from './StatPagination'
 const { Title } = Typography
 interface Props {
   selectedComponentId: string
   onSelectedIdAndType?: (id: string, type: QuestionComponentType | null) => void
 }
 export default ((props) => {
-  const { id = '' } = useParams()
   const { selectedComponentId, onSelectedIdAndType } = props
-  const [total, setTotal] = useState(0)
-  const [list, setList] = useState<AnswerProps[]>([])
-  const [page, setPage] = useState(1)
-  const [pageSize, setPageSize] = useState(DEFAULT_STAT_PAGE_SIZE)
+  // const [total, setTotal] = useState(0)
+  // const [list, setList] = useState<AnswerProps[]>([])
+  const { total, list, loading } = useGetQuestionStat()
   const { componentList } = useGetComponentInfo()
-  const { loading } = useRequest(
-    async () => {
-      const res = await getQuestionStatListServices<StatQuestion>(id)
-      return res
-    },
+  // const { loading } = useRequest(
+  //   async () => {
+  //     const res = await getQuestionStatListServices<StatQuestion>(id, {
+  //       page: 1,
+  //       pageSize: 5
+  //     })
+  //     return res
+  //   },
 
-    {
-      refreshDeps: [page, pageSize, id],
-      onSuccess(res) {
-        const { total, list } = res
-        setTotal(total)
-        setList(list)
-      }
-    }
-  )
+  //   {
+  //     refreshDeps: [page, pageSize, id],
+  //     onSuccess(res) {
+  //       const { total, list } = res
+  //       setTotal(total)
+  //       setList(list)
+  //     }
+  //   }
+  // )
   const handleClick = (
     e: MouseEvent,
     id: string,
@@ -76,10 +74,7 @@ export default ((props) => {
       return tableColumns
     }
   )
-  const dataSource = list.map((item) => ({ ...item, key: item.id }))
-  useEffect(() => {
-    console.log(tableColumns, dataSource)
-  }, [tableColumns, dataSource])
+  const dataSource = list?.map((item) => ({ ...item, key: item.id }))
   return (
     <div>
       <Title level={3}>答卷数量:{!loading ? total : ''}</Title>
@@ -96,7 +91,7 @@ export default ((props) => {
         >
           <div
             onClick={(e) => {
-              handleClick(e, '',null)
+              handleClick(e, '', null)
             }}
             style={{ height: 'calc(100vh - 57px - 200px)', overflow: 'auto' }}
           >
@@ -107,20 +102,7 @@ export default ((props) => {
             />
           </div>
 
-          <div style={{ textAlign: 'center', marginTop: '25px' }}>
-            <Pagination
-              total={total}
-              current={page}
-              pageSize={pageSize}
-              onChange={(page) => {
-                setPage(page)
-              }}
-              onShowSizeChange={(page, size) => {
-                setPage(page)
-                setPageSize(size)
-              }}
-            />
-          </div>
+          <StatPagination total={total} />
         </div>
       )}
     </div>

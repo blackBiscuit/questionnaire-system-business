@@ -10,6 +10,7 @@ import useGetPageInfoData from '../../../hooks/useGetPageInfoData'
 import useLoadQuestionData from '../../../hooks/useLoadQuestionData'
 import styles from './index.module.scss'
 import { QuestionComponentType } from '../../../components/QuestionComponents'
+import NotFount from '../../NotFount'
 /**
  * {
  * id: 'dada',
@@ -20,13 +21,22 @@ import { QuestionComponentType } from '../../../components/QuestionComponents'
  * }
  */
 export default (() => {
-  const { loading } = useLoadQuestionData()
-  const { title, isPublished } = useGetPageInfoData()
+  const { loading, error } = useLoadQuestionData()
+  const { title, isPublished, startTime, endTime, answerCount } =
+    useGetPageInfoData()
   const [selectedComponentId, setSelectedComponentId] = useState('')
   const [selectedComponentType, setSelectedComponentType] =
     useState<QuestionComponentType | null>(null)
   useTitle(`问卷统计-${title}`)
-  if (typeof isPublished === 'boolean' && !isPublished) return <NoPublish />
+  if (error) return <NotFount />
+  if (
+    typeof isPublished === 'boolean' &&
+    !isPublished &&
+    !startTime &&
+    !endTime &&
+    answerCount <= 0
+  )
+    return <NoPublish />
   const loadingEle = (
     <>
       <div className={styles['left-loading']}>

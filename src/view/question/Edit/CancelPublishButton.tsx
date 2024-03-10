@@ -13,7 +13,7 @@ export default (() => {
   const { id } = useParams()
   const dispatch = useDispatch()
   const { componentList } = useGetComponentInfo()
-  const { title, desc, js, css, isPublished, answerCount, resetTitle } =
+  const { title, desc, isPublished, answerCount, resetTitle, timerType } =
     useGetPageInfoData()
   const { loading, run: cancelPublish } = useRequest(
     async () => {
@@ -21,10 +21,10 @@ export default (() => {
       await updateQuestionServices(+id, {
         title,
         desc,
-        js,
-        css,
         componentList,
-        isPublished: false
+        isPublished: false,
+        startTime: null,
+        endTime: null
       })
     },
     {
@@ -35,11 +35,13 @@ export default (() => {
           resetPageInfoReducer({
             title,
             desc,
-            js,
-            css,
             isPublished: false,
             answerCount,
-            resetTitle
+            resetTitle,
+            timerType,
+            startTime: null,
+            endTime: null,
+            time: null
           })
         )
       }

@@ -11,6 +11,10 @@ import Star from '../view/manage/Star'
 import Trash from '../view/manage/Trash'
 import Edit from '../view/question/Edit'
 import Stat from '../view/question/Stat'
+import Template from '../view/template'
+import Group from '../view/group'
+import QuestionTemplateItem from '../view/questionTemplateItem'
+import Forget from '../view/Forget'
 const router = createBrowserRouter([
   {
     path: '/',
@@ -33,6 +37,10 @@ const router = createBrowserRouter([
         element: <Register />
       },
       {
+        path: '/forget',
+        element: <Forget />
+      },
+      {
         path: '/manage',
         element: <ManageLayout />,
         children: [
@@ -49,6 +57,18 @@ const router = createBrowserRouter([
             element: <Trash />
           }
         ]
+      },
+      {
+        path: '/template',
+        element: <Template />
+      },
+      {
+        path: '/group/:id',
+        element: <Group />
+      },
+      {
+        path: '/question/template/:id',
+        element: <QuestionTemplateItem />
       },
       {
         path: '*',
@@ -80,6 +100,7 @@ export default router
 export const LOGIN_PATHNAME = '/login'
 export const HOME_PATHNAME = '/home'
 export const REGISTER_PATHNAME = '/register'
+export const FORGET_PATHNAME = '/forget'
 export const MANAGE_LIST_PATHNAME = '/manage/list'
 export const QUESTION_STAT = '/question/stat'
 export const QUESTION_EDIT = '/question/edit'
@@ -88,6 +109,11 @@ export const isLoginOrRegister = (pathname: string) => {
   const NO_LOGIN_LIST = [LOGIN_PATHNAME, REGISTER_PATHNAME]
   return NO_LOGIN_LIST.includes(pathname) ? true : false
 }
-const noNeedUserInfoAry = [LOGIN_PATHNAME, HOME_PATHNAME, REGISTER_PATHNAME]
+const noNeedUserInfoAry = [
+  LOGIN_PATHNAME,
+  HOME_PATHNAME,
+  REGISTER_PATHNAME,
+  FORGET_PATHNAME
+]
 export const isNoNeedUserInfo = (pathname: string) =>
   noNeedUserInfoAry.includes(pathname) ? true : false

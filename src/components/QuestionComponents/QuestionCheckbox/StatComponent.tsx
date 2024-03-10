@@ -36,7 +36,9 @@ export default ((props) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [statType, setStatType] = useState<ChartType>('pie')
   const { stat, title } = props
-  const filterStat = stat.filter((item) => item.count !== 0)
+  const filterStat = stat
+    .filter((item) => item.count !== 0)
+    .map((item) => ({ ...item, name: item.name.trim() }))
   const handleOk = () => {
     setIsModalOpen(false)
   }
@@ -121,13 +123,36 @@ export default ((props) => {
       )
     }
     if (type === 'bar') {
+      // const t = stat.map(item=>({name:item.name,pv:item.count}))
+      // Component = (
+      //   <ComposedChart
+      //     layout="vertical"
+      //     width={width}
+      //     height={400}
+      //     data={filterStat}
+      //     margin={{
+      //       top: 20,
+      //       right: 20,
+      //       bottom: 20,
+      //       left: 20
+      //     }}
+      //   >
+      //     <CartesianGrid stroke="#f5f5f5" />
+      //     <XAxis type="number" />
+      //     <YAxis dataKey="name" type="category" scale="band" />
+      //     <Tooltip />
+      //     <Legend />
+      //     <Bar dataKey="count" barSize={20} fill="#413ea0" />
+
+      //   </ComposedChart>
+      // )
       const size = (400 - 50) / stat.length < 20 ? 20 : (400 - 50) / stat.length
       Component = (
         <ComposedChart
           layout="vertical"
           width={width}
           height={400}
-          data={stat}
+          data={filterStat}
           margin={{
             top: 20,
             right: 20,
@@ -137,6 +162,7 @@ export default ((props) => {
         >
           <CartesianGrid stroke="#f5f5f5" />
           <XAxis type="number" />
+
           <YAxis dataKey="name" type="category" scale="band" />
           <Tooltip />
           <Legend />
@@ -187,8 +213,8 @@ export default ((props) => {
           title: '小计',
           dataIndex: 'count',
           key: 'count',
-         // defaultSortOrder: 'ascend',
-          sorter: (a, b) => a.count - b.count,
+          // defaultSortOrder: 'ascend',
+          sorter: (a, b) => a.count - b.count
         },
         {
           title: '比例',

@@ -23,7 +23,10 @@ interface Props {
   isStar: boolean
   isPublished: boolean
   createAt: string
+  startTime: null | Date
+  endTime: null | Date
   onChangeStar?: (id: number, isStar: boolean) => void
+  onDelete?: () => void
 }
 const { confirm } = Modal
 export default ((props) => {
@@ -34,7 +37,10 @@ export default ((props) => {
     createAt,
     id,
     isStar: _isStar,
-    onChangeStar
+    startTime,
+    endTime,
+    onChangeStar,
+    onDelete
   } = props
   const [isDeletedState, setIsDeleteState] = useState(false)
   const [isStar, setIsStar] = useState(_isStar)
@@ -62,7 +68,11 @@ export default ((props) => {
       manual: true,
       onSuccess() {
         message.success('删除成功，若需要恢复请前往回收站查看')
-        setIsDeleteState(true)
+        if (onDelete) {
+          onDelete()
+        } else {
+          setIsDeleteState(true)
+        }
       }
     }
   )
@@ -87,10 +97,8 @@ export default ((props) => {
       icon: <ExclamationCircleFilled />,
       onOk() {
         runDelete()
-        console.log('OK')
       },
       onCancel() {
-        console.log('Cancel')
       }
     })
   }
@@ -98,6 +106,12 @@ export default ((props) => {
     runDuplicate()
   }
   if (isDeletedState) return <></>
+  const canGoToStat =
+    typeof isPublished === 'boolean' &&
+    !isPublished &&
+    !startTime &&
+    !endTime &&
+    answerCount <= 0
   return (
     <div className={styles['question-card-wrapper']}>
       <div className={styles['question-card-header']}>
@@ -145,7 +159,7 @@ export default ((props) => {
               type="text"
               size="small"
               icon={<LineChartOutlined />}
-              disabled={!isPublished}
+              disabled={canGoToStat}
               onClick={() => {
                 navigate(`/question/stat/${id}`)
               }}

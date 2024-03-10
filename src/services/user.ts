@@ -12,13 +12,14 @@ export const userRegisterServices = async <T extends Record<string, any>>(
   const url = '/api/user/register'
   return (await axios.post(url, data)) as T
 }
-export const getEmailCodeServices = async <
-  T extends Record<string, any>
->(data: {
-  email: string
-}) => {
+export const getEmailCodeServices = async <T extends Record<string, any>>(
+  data: {
+    email: string
+  },
+  isForget?: boolean
+) => {
   const url = '/api/user/email/code'
-  return (await axios.post(url, data)) as T
+  return (await axios.post(url, data, { params: { isForget } })) as T
 }
 
 export const userLoginServices = async <T extends Record<string, any>>(
@@ -26,4 +27,12 @@ export const userLoginServices = async <T extends Record<string, any>>(
 ) => {
   const url = '/api/user/login'
   return (await axios.post(url, data)) as T
+}
+export const updateUserInfoServices = async <T extends Record<string, any>>(
+  data: Partial<Omit<RegisterParams, 'email'>> & {
+    email: string
+  }
+) => {
+  const url = '/api/user/forget'
+  return (await axios.patch(url, data)) as T
 }

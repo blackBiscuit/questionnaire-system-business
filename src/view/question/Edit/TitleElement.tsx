@@ -35,7 +35,6 @@ export default ((props) => {
             onBlur && onBlur(newTitle)
           }}
           onPressEnter={(e) => {
-            console.log(e)
             const target = e.target as HTMLInputElement
             const newTitle = target.value
             setEditState(false)

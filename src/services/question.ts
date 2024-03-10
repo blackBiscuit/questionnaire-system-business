@@ -9,6 +9,7 @@ interface SearchOption {
   page: number
   pageSize: number
 }
+type ResData = Record<string, any> | null
 export const getQuestionServices = async <T extends Record<string, any> | null>(
   id: number
 ): Promise<T> => {
@@ -28,7 +29,6 @@ export const createQuestionServices = async <
 >() => {
   const url = 'api/question'
   const data = (await axios.post(url)) as T
-  console.log(data)
   return data
 }
 export const updateQuestionServices = async <T extends Record<string, any>>(
@@ -68,16 +68,55 @@ export const deleteQuestionsServices = async <T extends Record<string, any>>(
 }
 export const publishedQuestionServices = async <T extends Record<string, any>>(
   id: number,
-  published: boolean
+  published: boolean,
+  startTime?: Date,
+  endTime?: Date
 ) => {
   const url = `/api/question/published/${id}`
   return (await axios.patch(url, {
-    published
+    published,
+    startTime,
+    endTime
   })) as T
 }
 export const publishedChangedServices = async <T extends Record<string, any>>(
   id: number
 ) => {
   const url = `/api/question/published/changed/${id}`
+  return (await axios.get(url)) as T
+}
+export const getQuestionTemplateServices = async <
+  T extends Record<string, any>
+>() => {
+  const url = '/api/question/template/'
+  return (await axios.get(url)) as T
+}
+export const getQuestionGroupServices = async <T extends Record<string, any>>(
+  type?: number
+) => {
+  const url = '/api/question/group/'
+  return (await axios.get(url, {
+    params: {
+      type
+    }
+  })) as T
+}
+
+export const getQuestionGroupItemServices = async <T extends ResData>(
+  id: number
+) => {
+  const url = `/api/question/group/${id}`
+  return (await axios.get(url)) as T
+}
+export const getQuestionTemplateItemServices = async <T extends ResData>(
+  id: number
+) => {
+  const url = `/api/question/template/${id}`
+  return (await axios.get(url)) as T
+}
+export const duplicateQuestionTemplateServices = async <T extends ResData>(
+  id: number
+) => {
+  const url = `/api/question/template/duplicate/${id}`
   return (await axios.get(url)) as T
 }

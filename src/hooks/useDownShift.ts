@@ -3,13 +3,13 @@ import { useState, useEffect } from 'react'
 const useDownShift = () => {
   const [downShift, setDownShift] = useState(false)
   const handleKeydown = (e: KeyboardEvent) => {
-    // console.log('keydown', e)
+    
     if (e.key === 'Shift') {
       setDownShift(true)
     }
   }
   const handleKeyup = (e: KeyboardEvent) => {
-    //console.log('handleKeyup', e)
+    
     if (e.key === 'Shift') {
       setDownShift(false)
     }

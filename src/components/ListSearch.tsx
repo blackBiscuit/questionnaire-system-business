@@ -15,7 +15,6 @@ export default (() => {
     navigate(`${pathname}?${LIST_SEARCH_PARAM_KEY}=${value}`)
   }
   useEffect(() => {
-    console.log(searchParams.get(LIST_SEARCH_PARAM_KEY))
     setSearchText(searchParams.get(LIST_SEARCH_PARAM_KEY) || '')
   }, [searchParams])
   return (

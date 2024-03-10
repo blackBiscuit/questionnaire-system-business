@@ -47,7 +47,6 @@ export default (() => {
   // const [getEmailCodeDuration, setGetEmailCodeDuration] = useState(0)
   //  const [emailCodeFlag, setEmailCodeFlag] = useState(true)
   const onFinish = (values: FieldType) => {
-    console.log('Success:', values)
     run(values)
   }
 
@@ -83,37 +82,6 @@ export default (() => {
       /* empty */
     }
   }
-  // const onFinishFailed = (errorInfo: string) => {
-  //   console.log('Failed:', errorInfo)
-  // }
-  // useEffect(() => {
-  //   if (!emailCodeFlag) {
-  //     const duration =
-  //       getEmailCodeDuration === 0
-  //         ? EMAIL_CODE_DURATION
-  //         : getEmailCodeDuration - 1
-  //     if (duration === EMAIL_CODE_DURATION) {
-  //       setGetEmailCodeDuration(duration)
-  //     } else {
-  //       setTimeout(() => {
-  //         setGetEmailCodeDuration(duration)
-  //         if (duration === 0) {
-  //           setEmailCodeFlag(true)
-  //         }
-  //       }, 1000)
-  //     }
-  //   }
-
-  //   console.log(1)
-  // }, [emailCodeFlag, getEmailCodeDuration])
-  // useEffect(() => {
-  //   if (getEmailCodeDuration !== 0) {
-  //     const duration = getEmailCodeDuration - 1
-  //     setTimeout(() => {
-  //       setGetEmailCodeDuration(duration)
-  //     }, 1000)
-  //   }
-  // }, [getEmailCodeDuration])
   return (
     <div className={styles['container-wrapper']}>
       {contextHolder}

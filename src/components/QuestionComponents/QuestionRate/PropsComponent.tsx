@@ -26,7 +26,6 @@ export default ((props) => {
   const [form] = Form.useForm<QuestionRatePropsType>()
   const handleValueChange = () => {
     const newQuestionInput = form.getFieldsValue()
-    console.log(newQuestionInput)
     onchange && onchange(newQuestionInput)
   }
   useEffect(() => {

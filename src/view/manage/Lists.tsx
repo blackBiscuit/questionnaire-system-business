@@ -6,15 +6,12 @@ import useLoadQuestionListData from '../../hooks/useLoadQuestionListData'
 import Loading from '../../components/Loading'
 import ListPagination from '../../components/ListPagination'
 export default (() => {
-  //const [questionList, setQuestionList] = useState<QuestionData[]>([])
-
-  const { data = { list: [], total: 0 }, loading } = useLoadQuestionListData()
+  const {
+    data = { list: [], total: 0 },
+    loading,
+    refresh
+  } = useLoadQuestionListData()
   const { list: questionList, total } = data
-  // useEffect(() => {
-  //   console.log(page)
-  //   navigate(`${pathname}?${LIST_PAGE_PARAM_KEY}=${page}`)
-  // // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [page])
   return (
     <div className={styles['lists-wrapper']}>
       <div className={styles['lists-headers']}>
@@ -28,7 +25,13 @@ export default (() => {
         {loading && <Loading />}
         {!loading &&
           questionList.map((question) => (
-            <QuestionCard {...question} key={question.id} />
+            <QuestionCard
+              {...question}
+              key={question.id}
+              onDelete={() => {
+                refresh()
+              }}
+            />
           ))}
       </div>
       <div className={styles['question-pagination-container']}>

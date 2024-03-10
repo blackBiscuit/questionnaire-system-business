@@ -1,4 +1,4 @@
-import { FC, useState, useEffect } from 'react'
+import { FC, useState } from 'react'
 import { Empty, Table, Tag, Space, Button, message, Modal } from 'antd'
 import { useRequest } from 'ahooks'
 import {
@@ -107,10 +107,6 @@ export default (() => {
       }
     })
   }
-
-  useEffect(() => {
-    console.log(selectionKeys)
-  }, [selectionKeys])
   return (
     <div className={styles['lists-wrapper']}>
       <div className={styles['lists-headers']}>
@@ -151,8 +147,6 @@ export default (() => {
                   rowSelection={{
                     type: 'checkbox',
                     onChange: (selectedRowKeys: React.Key[]) => {
-                      //useState
-                      console.log(selectedRowKeys)
                       setSelectionKeys(selectedRowKeys as number[])
                     }
                   }}

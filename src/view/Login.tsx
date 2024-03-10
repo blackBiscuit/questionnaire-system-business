@@ -4,7 +4,7 @@ import { useRequest } from 'ahooks'
 import { LockOutlined, UserAddOutlined, UserOutlined } from '@ant-design/icons'
 import { Button, Checkbox, Form, Input, message } from 'antd'
 import { Link, useSearchParams, useNavigate } from 'react-router-dom'
-import { MANAGE_LIST_PATHNAME, REGISTER_PATHNAME } from '../router'
+import { FORGET_PATHNAME, MANAGE_LIST_PATHNAME, REGISTER_PATHNAME } from '../router'
 import styles from './Login.module.scss'
 import { userLoginServices } from '../services/user'
 import { LoginParams, LoginResponse } from '../types/user'
@@ -44,7 +44,6 @@ export default (() => {
     {
       manual: true,
       onSuccess(data) {
-        console.log(data)
         const { username, email } = data.userInfo
         setToken(data.token)
         dispatch(
@@ -55,14 +54,13 @@ export default (() => {
         )
         message.success(`欢迎回来😊,${username}`)
         navigate(MANAGE_LIST_PATHNAME)
-      },
-     // onError() {}
+      }
+      // onError() {}
     }
   )
   const _email = searchParams.get('email')
   const onFinish = (values: FieldType) => {
     const { email, password, remember } = values || {}
-    console.log('Received values of form: ', values)
     if (remember) {
       rememberUser(email!, password!)
     } else {
@@ -131,9 +129,7 @@ export default (() => {
                 <Checkbox>记住我</Checkbox>
               </Form.Item>
 
-              <a className="login-form-forgot" href="">
-                忘记密码
-              </a>
+              <Link to={FORGET_PATHNAME}>忘记密码</Link>
             </div>
           </Form.Item>
           <Form.Item>

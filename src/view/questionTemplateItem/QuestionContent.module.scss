@@ -1,0 +1,12 @@
+.question-wrapper {
+  position: relative;
+  width: 1000px;
+  padding: 30px;
+  .content {
+    background-color: #fff;
+    .component {
+      padding: 20px 40px;
+      pointer-events: none; // 屏蔽鼠标行为，组件不让被点击到
+    }
+  }
+}

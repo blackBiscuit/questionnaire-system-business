@@ -63,23 +63,6 @@ export default (() => {
       target: '.load-more-content'
     }
   )
-  // useEffect(() => {
-  //    const loadingT = document.querySelector<HTMLSpanElement>('.load-more-content')
-
-  //   intersectionObserver.current = new IntersectionObserver((entries) => {
-  //     if (entries[0].isIntersecting) {
-  //       console.log('i am here')
-  //       run()
-  //     }
-  //   })
-  //   loadingT && intersectionObserver.current.observe(loadingT)
-  //   return () => {
-  //     if (loadingT && intersectionObserver.current) {
-  //       intersectionObserver.current.unobserve(loadingT)
-  //     }
-  //   }
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [loading])
   useEffect(() => {
     setQuestions([])
     setPage(1)
@@ -93,10 +76,6 @@ export default (() => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams])
   // keyword发生变化重置
-
-  useEffect(() => {
-    console.log(page)
-  }, [page])
   const loadMoreContent = useMemo(() => {
     if (loading) return <Loading />
     if (total === 0) return <Empty description="暂无数据" />
@@ -113,15 +92,17 @@ export default (() => {
         </div>
       </div>
       <>
-        <div className={styles['question-list-content']}>
-          {questions.map((question) => (
-            <QuestionCard
-              {...question}
-              key={question.id}
-              onChangeStar={handChangeStar}
-            />
-          ))}
-        </div>
+        {total !== 0 && (
+          <div className={styles['question-list-content']}>
+            {questions.map((question) => (
+              <QuestionCard
+                {...question}
+                key={question.id}
+                onChangeStar={handChangeStar}
+              />
+            ))}
+          </div>
+        )}
         <div className={styles['question-pagination-container']}>
           <div className="load-more-content">{loadMoreContent}</div>
           {/* <span className="loading-test">loading</span> */}

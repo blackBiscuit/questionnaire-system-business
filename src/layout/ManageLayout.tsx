@@ -1,11 +1,12 @@
-import { FC, useEffect, useState } from 'react'
+import { FC, useState } from 'react'
 import { Outlet, useNavigate, useLocation } from 'react-router-dom'
 import { Button, Divider, Space, message } from 'antd'
 import {
   PlusOutlined,
   UnorderedListOutlined,
   StarOutlined,
-  DeleteOutlined
+  DeleteOutlined,
+  FileAddOutlined
 } from '@ant-design/icons'
 import { createQuestionServices } from '../services/question'
 import styles from './ManageLayout.module.scss'
@@ -47,52 +48,27 @@ export default (() => {
       navigate(`/question/edit/${id}`)
       message.success('创建成功')
     }
-      setLoading(false)
+    setLoading(false)
   }
-  useEffect(() => {
-    console.log(location)
-  }, [location])
+  const handleGetTemplate = () => {
+    navigate('/template')
+  }
   return (
     <div className={styles.container}>
       <div className={styles.left}>
         <Space direction="vertical">
-          <Button
-            disabled={loading}
-            onClick={handleCreate}
-            type="primary"
-            size="large"
-            icon={<PlusOutlined />}
-          >
-            创建问卷
-          </Button>
+          <Space>
+            <Button
+              disabled={loading}
+              onClick={handleCreate}
+              type="primary"
+              icon={<PlusOutlined />}
+            >
+              创建问卷
+            </Button>
+            <Button onClick={handleGetTemplate} icon={<FileAddOutlined />}>获取模板</Button>
+          </Space>
           <Divider />
-          {/* <Button
-            size="large"
-            icon={<UnorderedListOutlined />}
-            onClick={() => {
-              navigate('list')
-            }}
-          >
-            我的问卷
-          </Button>
-          <Button
-            size="large"
-            icon={<StarOutlined />}
-            onClick={() => {
-              navigate('star')
-            }}
-          >
-            星标问卷
-          </Button>
-          <Button
-            size="large"
-            icon={<DeleteOutlined />}
-            onClick={() => {
-              navigate('trash')
-            }}
-          >
-            回收站
-          </Button> */}
           {navList.map((nav) => (
             <Button
               type={location.pathname.includes(nav.path) ? 'default' : 'text'}

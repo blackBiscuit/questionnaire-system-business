@@ -30,46 +30,6 @@ export default (() => {
     useGetComponentInfo()
   const { past } = useGetUndoInfo()
   const { isLocked } = selectedComponent || {}
-  // const computedMoveIndex = (
-  //   // oldIndex: number,
-  //   type: 'increase' | 'decrease'
-  // ) => {
-  //   if (selectedComponent?.isLocked) {
-  //     message.info('不能移动锁定的组件')
-  //     return
-  //   }
-  //   const oldIndex = componentList.findIndex(
-  //     (c) => c.component_id === selectedId
-  //   )
-  //   if (oldIndex < 0) return
-  //   const progressiveNum = type === 'increase' ? 1 : -1
-  //   const index = oldIndex + progressiveNum
-  //   const moveTypeObj: ComputedIndexType = {
-  //     type: 'move',
-  //     index
-  //   }
-  //   while (
-  //     componentList[moveTypeObj.index]?.isLocked ||
-  //     moveTypeObj.index < 0 ||
-  //     moveTypeObj.index > componentList.length - 1
-  //   ) {
-  //     moveTypeObj.index += progressiveNum
-  //     if (moveTypeObj.index < 0) {
-  //       moveTypeObj.type = 'insert'
-  //       moveTypeObj.index = componentList.length - 1
-  //     }
-  //     console.log(moveTypeObj.index)
-  //     if (moveTypeObj.index > componentList.length - 1) {
-  //       moveTypeObj.type = 'insert'
-  //       moveTypeObj.index = 0
-  //     }
-  //   }
-  //   if (moveTypeObj.type === 'move') {
-  //     dispatch(moveComponentReducer({ newIndex: moveTypeObj.index, oldIndex }))
-  //   } else {
-  //     dispatch(insertComponentReducer(moveTypeObj.index))
-  //   }
-  // }
   const computedMoveIndex = (type: 'increase' | 'decrease') => {
     if (selectedComponent?.isLocked) {
       message.info('不能移动锁定的组件')

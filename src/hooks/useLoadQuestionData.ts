@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { useRequest } from 'ahooks'
 import { useDispatch } from 'react-redux'
-
 import { getQuestionServices } from '../services/question'
 import { resetComponentsReducer } from '../store/componentReducer'
 import { resetPageInfoReducer } from '../store/pageInfoReducer'
@@ -16,11 +15,11 @@ const useLoadQuestionData = () => {
     async (id: number) => {
       if (isNaN(id)) throw new Error('没有问卷 id')
       const data = await getQuestionServices<QuestionInfo | null>(+id)
-      console.log(data)
       return data
     },
     {
-      manual: true
+      manual: true,
+      onError(){}
     }
   )
   useEffect(() => {
@@ -33,13 +32,15 @@ const useLoadQuestionData = () => {
       componentList,
       title,
       desc = '',
-      js = '',
-      css = '',
+      startTime,
+      endTime,
       isPublished = false,
       answerCount
     } = data
     const selectedId =
       componentList.length > 0 ? componentList[0].component_id : ''
+    const formatStartTime = startTime ? new Date(startTime) : null
+    const formatEndTime = endTime ? new Date(endTime) : null
     dispatch(
       resetComponentsReducer({
         componentList,
@@ -51,11 +52,13 @@ const useLoadQuestionData = () => {
       resetPageInfoReducer({
         title,
         desc,
-        js,
-        css,
+        timerType: startTime && endTime ? 'closed' : 'open',
         resetTitle: title,
         isPublished,
-        answerCount
+        answerCount,
+        time: null,
+        startTime: formatStartTime,
+        endTime: formatEndTime
       })
     )
     // eslint-disable-next-line react-hooks/exhaustive-deps

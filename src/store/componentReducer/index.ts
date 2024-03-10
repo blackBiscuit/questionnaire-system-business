@@ -293,64 +293,6 @@ export const componentSlice = createSlice({
           }
           newComponentList[nextIndex] = c
         }
-        // for (let i = 0; i < componentList.length; i++) {
-        //   const c = componentList[i]
-        //   if (c.isLocked) continue
-        //   let nextIndex = i + 1
-        //   if (nextIndex > componentList.length - 1) {
-        //     nextIndex = 0
-        //   }
-        //   const beforeNextComponent = newComponentList[nextIndex]
-        //   if (recordIndex.isSkip) {
-        //     newComponentList[i] = componentList[recordIndex.index]
-        //     recordIndex.isSkip = false
-        //   }
-        //   if (beforeNextComponent.isLocked) {
-        //     recordIndex.isSkip = true
-        //     recordIndex.index = i
-        //     continue
-        //   }
-        //   newComponentList[nextIndex] = c
-        // }
-        // for (let i = componentList.length - 1; i > -1; i--) {
-        //   const c = componentList[i]
-        //   if (c.isLocked) continue
-        //   let nextIndex = i - 1
-        //   if (nextIndex < 0) {
-        //     nextIndex = componentList.length - 1
-        //   }
-        //   console.log(i, nextIndex)
-        //   const beforeNextComponent = newComponentList[nextIndex]
-        //   if (recordIndex.isSkip) {
-        //     newComponentList[i] = componentList[recordIndex.index]
-        //     recordIndex.isSkip = false
-        //   }
-        //   if (beforeNextComponent.isLocked) {
-        //     recordIndex.isSkip = true
-        //     recordIndex.index = i
-        //     continue
-        //   }
-        //   newComponentList[nextIndex] = c
-        // }
-        // progressiveComponentList.forEach((c, i) => {
-        //   if (c.isLocked) return
-        //   let nextIndex = i + 1
-        //   if (nextIndex > componentList.length - 1) {
-        //     nextIndex = 0
-        //   }
-        //   console.log(nextIndex)
-        //   const beforeNextComponent = newComponentList[nextIndex]
-        //   if (recordIndex.isSkip) {
-        //     newComponentList[i] = progressiveComponentList[recordIndex.index]
-        //     recordIndex.isSkip = false
-        //   }
-        //   if (beforeNextComponent.isLocked) {
-        //     recordIndex.isSkip = true
-        //     recordIndex.index = i
-        //     return
-        //   }
-        //   newComponentList[nextIndex] = c
-        // })
         draft.componentList = newComponentList
       }
     )

@@ -49,9 +49,6 @@ export default ((props) => {
     e.stopPropagation()
     dispatch(changeSelectedId(id))
   }
-  // useEffect(() => {
-  //   console.log(componentList)
-  // }, [componentList])
   if (loading) {
     return (
       <div className={styles['canvas-loading']}>
@@ -67,7 +64,6 @@ export default ((props) => {
       message.info('不能选中锁定的组件')
       return
     }
-    console.log(downShift)
     if (downShift) {
       dispatch(insertComponentReducer({ oldIndex, newIndex }))
       return

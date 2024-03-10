@@ -43,12 +43,12 @@ import QuestionCheckConfig, {
   QuestionCheckChangePropsType,
   QuestionCheckStatPropsType
 } from './QuestionCheckbox'
-import QuestionRateConfig, {
-  QuestionRatePropsType,
-  QuestionRateProps,
-  QuestionRateName,
-  QuestionRateChangePropsType
-} from './QuestionRate'
+// import QuestionRateConfig, {
+//   QuestionRatePropsType,
+//   QuestionRateProps,
+//   QuestionRateName,
+//   QuestionRateChangePropsType
+// } from './QuestionRate'
 // 组件类型 +
 export type QuestionComponentType =
   | QuestionInputName
@@ -58,7 +58,7 @@ export type QuestionComponentType =
   | QuestionTextAreaName
   | QuestionRadioName
   | QuestionCheckName
-  | QuestionRateName
+//| QuestionRateName
 // 组件props +
 export type QuestionComponentPropsType =
   | QuestionInputPropsType
@@ -68,7 +68,7 @@ export type QuestionComponentPropsType =
   | QuestionTextAreaPropsType
   | QuestionRadioPropsType
   | QuestionCheckPropsType
-  | QuestionRatePropsType
+// | QuestionRatePropsType
 export interface QuestionPublicProps {
   title?: string
   component_id: string
@@ -90,7 +90,7 @@ export type QuestionComponentChangePropsType =
   | QuestionTextAreaChangePropsType
   | QuestionRadioChangePropsType
   | QuestionCheckChangePropsType
-  | QuestionRateChangePropsType
+// | QuestionRateChangePropsType
 // 和后端统一返回类型 +
 export type QuestionComponent =
   | QuestionTitleProps
@@ -100,7 +100,7 @@ export type QuestionComponent =
   | QuestionTextAreaProps
   | QuestionRadioProps
   | QuestionCheckProps
-  | QuestionRateProps
+//| QuestionRateProps
 type GetQuestionComponentProps<T extends QuestionComponentType> = FC<
   PickQuestionComponentType<T>
 >
@@ -126,7 +126,7 @@ export interface QuestionComponentListType {
   questionTextArea: QuestionTextAreaPropsType
   questionRadio: QuestionRadioPropsType
   questionCheck: QuestionCheckPropsType
-  questionRate: QuestionRatePropsType
+  // questionRate: QuestionRatePropsType
 }
 //  方便推断 StatComponent类型 +
 export interface QuestionComponentStatListType {
@@ -171,8 +171,8 @@ export const componentConfigList: Array<ComponentConfigUniteProps> = [
   QuestionInfoConfig,
   QuestionTextAreaConfig,
   QuestionRadioConfig,
-  QuestionCheckConfig,
-  QuestionRateConfig
+  QuestionCheckConfig
+  // QuestionRateConfig
 ]
 export type ComponentGroupType = 'text' | 'input' | 'select'
 // 分组类型
@@ -201,8 +201,8 @@ export const componentConfigGroup: ComponentConfigGroupProps[] = [
     groupName: '用户选择',
     componentList: [
       QuestionRadioConfig,
-      QuestionCheckConfig,
-      QuestionRateConfig
+      QuestionCheckConfig
+      //   QuestionRateConfig
     ]
   }
 ]

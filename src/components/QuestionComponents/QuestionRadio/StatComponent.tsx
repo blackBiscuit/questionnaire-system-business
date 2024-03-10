@@ -73,7 +73,7 @@ export default ((props) => {
     if (type === 'line') {
       Component = (
         <BarChart
-          data={stat}
+          data={filterStat}
           width={width}
           height={400}
           margin={{ top: 5, right: 30, left: 0, bottom: 5 }}
@@ -97,7 +97,7 @@ export default ((props) => {
           layout="vertical"
           width={width}
           height={400}
-          data={stat}
+          data={filterStat}
           margin={{
             top: 20,
             right: 20,

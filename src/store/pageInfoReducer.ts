@@ -1,3 +1,4 @@
+import { Dayjs } from 'dayjs'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { produce } from 'immer'
 import { QuestionInfo } from '../types/question'
@@ -9,21 +10,23 @@ import { QuestionInfo } from '../types/question'
 //   js?: string
 //   css?: string
 // }
-type OmitName =
-  | 'id'
-  | 'componentList'
-  | 'createAt'
-  | 'isStar'
-  | 'isDeleted'
+type OmitName = 'id' | 'componentList' | 'createAt' | 'isStar' | 'isDeleted'
 // 组件内部使用的标题，当标题为空时，会用内部标题替换，防止标题为空
-export type PageInfoType = Omit<QuestionInfo, OmitName> & { resetTitle: string }
+export type PageInfoType = Omit<QuestionInfo, OmitName> & {
+  resetTitle: string
+  timerType: string
+  time: Dayjs | [Dayjs, Dayjs] | null
+}
 const INIT_STATE: PageInfoType = {
   title: '',
   resetTitle: '',
   desc: '',
-  js: '',
-  css: '',
-  answerCount:0
+  answerCount: 0,
+  timerType: 'closed',
+  time: null,
+  isPublished: false,
+  startTime: null,
+  endTime: null
 }
 export const pageInfoSlice = createSlice({
   name: 'pageInfo',

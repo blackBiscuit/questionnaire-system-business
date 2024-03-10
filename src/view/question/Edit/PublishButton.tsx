@@ -15,17 +15,27 @@ export default (() => {
   const { id } = useParams()
   const navigate = useNavigate()
   //const { componentList } = useGetComponentInfo()
-  const { isPublished, answerCount } = useGetPageInfoData()
+  const { isPublished, answerCount, time } = useGetPageInfoData()
   const { loading, run: publish } = useRequest(
     async () => {
       if (!id) return
-      await publishedQuestionServices(+id, true)
+      let startTime: undefined | Date
+      let endTime: undefined | Date
+      if (time) {
+        if (Array.isArray(time)) {
+          startTime = time[0].toDate()
+          endTime = time[1].toDate()
+        } else {
+          startTime = time.toDate()
+        }
+      }
+      await publishedQuestionServices(+id, true, startTime, endTime)
     },
     {
       manual: true,
       onSuccess() {
-        message.success(!isPublished ? '发布成功' : '重新发布成功')
-        navigate(`${QUESTION_STAT}/${id}`)
+         message.success(!isPublished ? '发布成功' : '重新发布成功')
+         navigate(`${QUESTION_STAT}/${id}`)
       }
     }
   )
@@ -39,7 +49,8 @@ export default (() => {
       onSuccess(data) {
         if (data?.isChanged) {
           confirm({
-            title: '确定重新发布吗? 问卷改变后，重新发布将清空之前的问卷回答哟!',
+            title:
+              '确定重新发布吗? 问卷改变后，重新发布将清空之前的问卷回答哟!',
             icon: <ExclamationCircleFilled />,
             okText: '是的',
             okType: 'danger',
@@ -48,6 +59,9 @@ export default (() => {
               publish()
             }
           })
+        }
+        if (typeof data?.isChanged === 'boolean' && !data.isChanged) {
+          publish()
         }
       }
     }

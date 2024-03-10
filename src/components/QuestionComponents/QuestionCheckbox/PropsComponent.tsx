@@ -32,8 +32,6 @@ export default ((props) => {
       const { required } = changedValues
       newQuestionTitle.requiredNum = required ? 1 : 0
     }
-
-    console.log(newQuestionTitle)
     onchange && onchange(newQuestionTitle)
   }
   useEffect(() => {
@@ -46,7 +44,6 @@ export default ((props) => {
     })
   }, [title, list, isVertical, required, requiredNum, form])
   useEffect(() => {
-    console.log('need change')
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const ary = list.map<SelectOpt>((_item, i) => {
       const num = i + 1

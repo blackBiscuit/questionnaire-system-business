@@ -55,7 +55,6 @@ export default ((props) => {
       sensors={sensors}
       collisionDetection={closestCenter}
       onDragEnd={handleDragEnd}
-      
     >
       <SortableContext items={items} strategy={verticalListSortingStrategy}>
         {children}

@@ -39,6 +39,5 @@ export default (() => {
       </>
     )
   }
-
   return <div className={styles.container}>{getElement()}</div>
 }) as FC

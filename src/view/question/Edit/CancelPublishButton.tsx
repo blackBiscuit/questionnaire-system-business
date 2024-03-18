@@ -4,28 +4,20 @@ import { useDispatch } from 'react-redux'
 import { Button, message, Modal } from 'antd'
 import { useRequest } from 'ahooks'
 import { ExclamationCircleFilled, LoadingOutlined } from '@ant-design/icons'
-import useGetComponentInfo from '../../../hooks/useGetComponentInfo'
 import useGetPageInfoData from '../../../hooks/useGetPageInfoData'
-import { updateQuestionServices } from '../../../services/question'
+import { publishedQuestionServices } from '../../../services/question'
 import { resetPageInfoReducer } from '../../../store/pageInfoReducer'
 const { confirm } = Modal
 export default (() => {
   const { id } = useParams()
   const dispatch = useDispatch()
-  const { componentList } = useGetComponentInfo()
+  // const { componentList } = useGetComponentInfo()
   const { title, desc, isPublished, answerCount, resetTitle, timerType } =
     useGetPageInfoData()
   const { loading, run: cancelPublish } = useRequest(
     async () => {
       if (!id) return
-      await updateQuestionServices(+id, {
-        title,
-        desc,
-        componentList,
-        isPublished: false,
-        startTime: null,
-        endTime: null
-      })
+      await publishedQuestionServices(+id, false, null, null)
     },
     {
       manual: true,

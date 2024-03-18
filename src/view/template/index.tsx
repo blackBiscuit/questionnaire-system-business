@@ -7,19 +7,6 @@ import { getQuestionTemplateServices } from '../../services/question'
 import { TemplateKind } from '../../types/question'
 import TemplateKinds from './TemplateKinds'
 import useLoadQuestionTemplateGroup from '../../hooks/useLoadQuestionTemplateGroup'
-// const tabs = [
-//   '全部',
-//   '产品/品牌',
-//   '大学生',
-//   '环境生态',
-//   '家庭/学校/教育',
-//   '企业员工',
-//   '社会民生',
-//   '市场/客户',
-//   '物业/社区',
-//   '医疗'
-// ]
-
 export default (() => {
   const [searchParams, setSearchParams] = useSearchParams()
   const [currentType, setCurrentType] = useState('all')
@@ -28,7 +15,6 @@ export default (() => {
   const { data } = useRequest(async () => {
     //templateKind
     const data = await getQuestionTemplateServices<TemplateKind[]>()
-
     return data
   })
   const templateKinds = useMemo<TabsProps['items']>(() => {

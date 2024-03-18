@@ -69,8 +69,8 @@ export const deleteQuestionsServices = async <T extends Record<string, any>>(
 export const publishedQuestionServices = async <T extends Record<string, any>>(
   id: number,
   published: boolean,
-  startTime?: Date,
-  endTime?: Date
+  startTime?: Date | null,
+  endTime?: Date | null
 ) => {
   const url = `/api/question/published/${id}`
   return (await axios.patch(url, {

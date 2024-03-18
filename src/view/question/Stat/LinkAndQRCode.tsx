@@ -9,7 +9,13 @@ import useGetPageInfoData from '../../../hooks/useGetPageInfoData'
 const URL_LINK = 'http://localhost:3000/question/'
 export default (() => {
   const { id } = useParams()
-  const { isPublished } = useGetPageInfoData()
+  const { isPublished, startTime, endTime, answerCount } = useGetPageInfoData()
+  const noGoToStat =
+    typeof isPublished === 'boolean' &&
+    !isPublished &&
+    !startTime &&
+    !endTime &&
+    answerCount <= 0
   const url = `${URL_LINK}${id}`
   const handleCopy = async () => {
     try {
@@ -19,7 +25,7 @@ export default (() => {
       message.error('复制失败')
     }
   }
-  if (!isPublished) return null
+  if (noGoToStat) return null
   return (
     <Space>
       <Input style={{ width: '300px' }} value={url} />

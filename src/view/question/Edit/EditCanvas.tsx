@@ -1,4 +1,4 @@
-import { FC, MouseEvent } from 'react'
+import { FC, MouseEvent, useRef } from 'react'
 import { useDispatch } from 'react-redux'
 import { Spin, message } from 'antd'
 import classNames from 'classnames'
@@ -19,6 +19,7 @@ import styles from './EditCanvas.module.scss'
 import { ComponentInfoType } from '../../../store/componentReducer'
 import useBindCanvasKeyPress from '../../../hooks/useBindCanvasKeyPress'
 import useDownShift from '../../../hooks/useDownShift'
+import useScrollToElement from '../../../hooks/useScrollToElement'
 interface Props {
   loading?: boolean
 }
@@ -44,7 +45,9 @@ export default ((props) => {
   const downShift = useDownShift()
   const { loading } = props
   const { componentList, selectedId } = useGetComponentInfo()
+  const scrollRef = useRef<null | HTMLDivElement>(null)
   useBindCanvasKeyPress()
+  useScrollToElement(scrollRef, selectedId)
   const handleClick = (e: MouseEvent, id: string) => {
     e.stopPropagation()
     dispatch(changeSelectedId(id))
@@ -70,14 +73,18 @@ export default ((props) => {
     }
     dispatch(moveComponentReducer({ oldIndex, newIndex }))
   }
+  // useEffect(()=>{
+
+  // },[selectedId])
   return (
-    <div className={styles['canvas-content']}>
+    <div className={styles['canvas-content']} ref={scrollRef}>
       <SortableContainer items={componentListWithId} onDragEnd={handleDragEnd}>
         {componentList
           .filter((component) => !component.isHidden)
           .map((component) => {
             return (
               <SortableItem
+                dataSelectedId={component.component_id}
                 key={component.component_id}
                 id={component.component_id}
               >

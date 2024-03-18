@@ -45,7 +45,6 @@ export default (() => {
       ...pageInfo
     })
   }, [pageInfo, form])
-
   const disabledDate: RangePickerProps['disabledDate'] = (current) => {
     // Can not select days before today and today
     return current && current < dayjs().startOf('day')

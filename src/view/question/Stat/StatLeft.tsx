@@ -1,4 +1,4 @@
-import { FC, useRef, useEffect, MouseEvent } from 'react'
+import { FC, useRef, MouseEvent } from 'react'
 import classNames from 'classnames'
 import useGetComponentInfo from '../../../hooks/useGetComponentInfo'
 import styles from './StatLeft.module.scss'
@@ -9,6 +9,7 @@ import {
   getAsComponent,
   getComponentConfigByType
 } from '../../../components/QuestionComponents'
+import useScrollToElement from '../../../hooks/useScrollToElement'
 interface Props {
   selectedComponentId: string
   onSelectedIdAndType?: (id: string, type: QuestionComponentType) => void
@@ -34,26 +35,6 @@ export default ((props) => {
   const { componentList } = useGetComponentInfo()
   const { selectedComponentId, onSelectedIdAndType } = props
   const scrollRef = useRef<HTMLDivElement>(null)
-  //   const getComponent = (component: ComponentConfigUniteProps) => {
-  //     const { defaultProps, title } = component
-  //     const Component = getAsComponent(component.Component)
-  //     const handleClick = () => {
-  //       //   const newComponent = {
-  //       //     component_id: ulid(),
-  //       //     type: component.type,
-  //       //     props: defaultProps,
-  //       //     title
-  //       //   } as QuestionComponent
-  //       //   dispatch(addComponent(newComponent))
-  //     }
-  //     return (
-  //       <div className={styles.wrapper} onClick={handleClick}>
-  //         <div className={styles.component}>
-  //           <Component {...defaultProps} />
-  //         </div>
-  //       </div>
-  //     )
-  //   }
   const handleClick = (
     e: MouseEvent,
     id: string,
@@ -62,23 +43,7 @@ export default ((props) => {
     e.stopPropagation()
     onSelectedIdAndType && onSelectedIdAndType(id, type)
   }
-  useEffect(() => {
-    if (selectedComponentId && scrollRef.current) {
-      const children = scrollRef.current.children
-      const currentChild: HTMLDivElement | undefined =
-        Array.prototype.find.call(children, (child: HTMLDivElement) => {
-          //child.dataset.selectedId child.getAttribute('data-selected-id')
-          const childId = child.dataset.selectedId
-          return childId === selectedComponentId
-        })
-      if (currentChild) {
-        scrollRef.current.scrollTo({
-          top: currentChild.offsetTop,
-          behavior: 'smooth'
-        })
-      }
-    }
-  }, [selectedComponentId])
+  useScrollToElement(scrollRef, selectedComponentId)
   return (
     <div
       ref={scrollRef}

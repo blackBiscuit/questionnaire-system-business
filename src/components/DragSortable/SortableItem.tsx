@@ -4,9 +4,10 @@ import { CSS } from '@dnd-kit/utilities'
 interface Props {
   id: string
   children: ReactNode
+  dataSelectedId?: string
 }
 export default ((props) => {
-  const { children, id } = props
+  const { children, id, dataSelectedId } = props
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id })
   const style = {
@@ -14,7 +15,13 @@ export default ((props) => {
     transition
   }
   return (
-    <div {...attributes} style={style} {...listeners} ref={setNodeRef}>
+    <div
+      data-selected-id={dataSelectedId}
+      {...attributes}
+      style={style}
+      {...listeners}
+      ref={setNodeRef}
+    >
       {children}
     </div>
   )

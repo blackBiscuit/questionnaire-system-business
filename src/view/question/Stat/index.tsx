@@ -29,14 +29,13 @@ export default (() => {
     useState<QuestionComponentType | null>(null)
   useTitle(`问卷统计-${title}`)
   if (error) return <NotFount />
-  if (
+  const noGoToStat =
     typeof isPublished === 'boolean' &&
     !isPublished &&
     !startTime &&
     !endTime &&
     answerCount <= 0
-  )
-    return <NoPublish />
+  if (noGoToStat) return <NoPublish />
   const loadingEle = (
     <>
       <div className={styles['left-loading']}>

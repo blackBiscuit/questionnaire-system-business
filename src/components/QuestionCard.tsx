@@ -1,7 +1,7 @@
-import { FC, useState } from 'react'
+import { FC, useState, useMemo } from 'react'
 import { useRequest } from 'ahooks'
 import { Button, Space, Tag, Popconfirm, Modal, message } from 'antd'
-import { useNavigate, Link } from 'react-router-dom'
+import { useNavigate, Link, useSearchParams } from 'react-router-dom'
 import {
   EditFilled,
   LineChartOutlined,
@@ -42,10 +42,11 @@ export default ((props) => {
     onChangeStar,
     onDelete
   } = props
+  const [searchParams] = useSearchParams()
   const [isDeletedState, setIsDeleteState] = useState(false)
   const [isStar, setIsStar] = useState(_isStar)
   const navigate = useNavigate()
-
+  const keyWord = searchParams.get('keyword')
   const { loading: duplicateLoading, run: runDuplicate } = useRequest(
     async () => {
       const data = await duplicateQuestionServices<{ id: string }>(id)
@@ -59,6 +60,24 @@ export default ((props) => {
       }
     }
   )
+  const keyWordTitle = useMemo(() => {
+    if (keyWord) {
+      const startIndex = title.indexOf(keyWord)
+      if (startIndex > -1) {
+        const endIndex = startIndex + keyWord.length
+        const startStr = title.slice(0, startIndex)
+        const endStr = title.slice(endIndex)
+        return (
+          <>
+            {startStr}
+            <span style={{ color: '#FF4848' }}>{keyWord}</span>
+            {endStr}
+          </>
+        )
+      }
+    }
+    return title
+  }, [keyWord, title])
   const { loading: deleteLoading, run: runDelete } = useRequest(
     async () =>
       await updateQuestionServices(id, {
@@ -98,8 +117,7 @@ export default ((props) => {
       onOk() {
         runDelete()
       },
-      onCancel() {
-      }
+      onCancel() {}
     })
   }
   const duplicate = () => {
@@ -121,7 +139,7 @@ export default ((props) => {
           <div className={styles['question-card-title']}>
             <Space>
               {isStar && <StarOutlined style={{ color: '#D1A20E' }} />}
-              {title}
+              <div>{keyWordTitle}</div>
             </Space>
           </div>
         </Link>
